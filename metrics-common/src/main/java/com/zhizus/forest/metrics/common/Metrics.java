@@ -11,29 +11,29 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Metrics extends StopWatch {
 
-    private final static Map<String, Map<Integer, Meta>> uriCodeMap = Maps.newConcurrentMap();
+    private final static Map<String, Map<Integer, Metrics.Meta>> uriCodeMap = Maps.newConcurrentMap();
 
-    private static Map<String, Metrics> metricsMap = Maps.newConcurrentMap();
+    private Map<Integer, Metrics.Meta> metaMap;
 
-    private Map<Integer, Meta> metaMap;
+    private Metrics.Meta meta;
 
-    private Meta meta;
-
-
-    public Metrics startWithUri(String uri) {
-        super.start();
-        this.metaMap = uriCodeMap.get(uri);
-        return this;
+    public static Metrics startWithUri(String uri) {
+        Metrics metrics = new Metrics();
+        metrics.start();
+        metrics.metaMap = uriCodeMap.get(uri);
+        return metrics;
     }
 
     public void success() {
         this.meta = metaMap.get(Status.SUCCESS.getValue());
         meta.gather(getTime());
     }
+
     public void failed() {
         this.meta = metaMap.get(Status.FAILED.getValue());
         meta.gather(getTime());
     }
+
     public void timeOut() {
         this.meta = metaMap.get(Status.TIMEOUT.getValue());
         meta.gather(getTime());
@@ -46,25 +46,9 @@ public class Metrics extends StopWatch {
         private Status(int value) {
             this.value = value;
         }
-
         public int getValue() {
             return value;
         }
-    }
-
-    public static synchronized Metrics getMetrics(String serviceName) {
-        Metrics metrics = metricsMap.get(serviceName);
-        if (metrics == null) {
-            metrics = new Metrics(serviceName);
-            metricsMap.put(serviceName, metrics);
-        }
-        return metrics;
-    }
-
-    private String serviceName;
-
-    private Metrics(String serviceName) {
-        this.serviceName = serviceName;
     }
 
 
