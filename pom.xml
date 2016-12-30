@@ -11,6 +11,7 @@
     <modules>
         <module>metrics-client</module>
         <module>metrics-web</module>
+        <module>metrics-server</module>
     </modules>
 
     <dependencies>
