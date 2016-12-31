@@ -14,6 +14,11 @@
         <module>metrics-server</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.source.jdk>1.7</java.source.jdk>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -21,7 +26,25 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
+
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <!-- Java8 -->
+                <configuration>
+                    <source>${java.source.jdk}</source>
+                    <target>${java.source.jdk}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
