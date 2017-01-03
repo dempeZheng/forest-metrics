@@ -1,25 +1,40 @@
 package com.zhizus.forest.metrics;
 
 import com.zhizus.forest.metrics.gen.Ack;
-import com.zhizus.forest.metrics.gen.Meta;
-import com.zhizus.forest.metrics.gen.Metrics;
+import com.zhizus.forest.metrics.gen.MetaConfig;
+import com.zhizus.forest.metrics.gen.MetaReq;
+import com.zhizus.forest.metrics.gen.MetricService;
 import org.apache.thrift.TException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Dempe on 2016/12/31 0031.
  */
-@Service
-public class MetricsIface implements Metrics.Iface {
+public class MetricsIface implements MetricService.Iface {
 
-    @Autowired
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetricsIface.class);
+
     private MetricsCollection metricsCollection;
 
+    public MetricsIface() {
+        metricsCollection = new MetricsCollection();
+    }
+
     @Override
-    public Ack sendMeta(Meta meta) throws TException {
-        metricsCollection.insertOne(meta);
-        return new Ack().setConfigId(111);
+    public Ack sendMeta(MetaReq metaReq) throws TException {
+        LOGGER.info("metaReq:{}", metaReq);
+        metricsCollection.insertOne(metaReq);
+        return new Ack((short) 0);
+    }
+
+    @Override
+    public Ack getConfigId(MetaConfig config) throws TException {
+        Ack ack = new Ack();
+        ack.setCode((short) 0);
+        // todo 根据配置生成hash
+        ack.setConfigId("forest-metircs-configId");
+        return ack;
     }
 
     @Override

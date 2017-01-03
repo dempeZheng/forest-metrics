@@ -1,13 +1,25 @@
 package com.zhizus.forest.metrics.client;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Dempe on 2016/12/30.
  */
 public class Metrics extends StopWatch {
 
-    private final static MetricsMap metricsMap = new MetricsMap();
+    private final static Logger LOGGER = LoggerFactory.getLogger(Metrics.class);
+
+    private static MetricsMap metricsMap = null;
+
+    static {
+        try {
+            metricsMap = new MetricsMap();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
 
     private Meta meta;
 
@@ -15,6 +27,10 @@ public class Metrics extends StopWatch {
         Metrics metrics = new Metrics();
         metrics.start();
         metrics.meta = metricsMap.get(uri);
+        if (metrics.meta == null) {
+            metrics.meta = new Meta(uri);
+            metricsMap.put(uri, metrics.meta);
+        }
         return metrics;
     }
 

@@ -27,6 +27,12 @@
             <artifactId>thrift-client</artifactId>
             <version>0.0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.zhizus</groupId>
+            <artifactId>thrift-server</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
 
