@@ -15,16 +15,16 @@ public class MetricsIface implements MetricService.Iface {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MetricsIface.class);
 
-    private MetricsCollection metricsCollection;
+    private MetricsDao metricsDao;
 
     public MetricsIface() {
-        metricsCollection = new MetricsCollection();
+        metricsDao = new MetricsDao();
     }
 
     @Override
     public Ack sendMeta(MetaReq metaReq) throws TException {
         LOGGER.info("metaReq:{}", metaReq);
-        metricsCollection.insertOne(metaReq);
+        metricsDao.insertOne(metaReq);
         return new Ack((short) 0);
     }
 

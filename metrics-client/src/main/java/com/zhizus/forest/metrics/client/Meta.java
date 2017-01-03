@@ -11,12 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Dempe on 2016/12/30 0030.
  */
 public class Meta {
-    private String uri;
-    private AtomicInteger count = new AtomicInteger(0);
-    private long time;
-    private int maxTime;
-    private int minTime;
-    private int[] codeArr = new int[3];
+    public String uri;
+    public AtomicInteger count = new AtomicInteger(0);
+    public long time;
+    public int maxTime;
+    public int minTime;
+    public int[] codeArr = new int[3];
 
     public Meta(String uri) {
         this.uri = uri;
@@ -58,6 +58,7 @@ public class Meta {
         this.maxTime = 0;
         this.minTime = 0;
     }
+
 
     @Override
     public String toString() {
