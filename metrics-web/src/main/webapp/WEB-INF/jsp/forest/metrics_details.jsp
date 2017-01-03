@@ -64,17 +64,23 @@
                         <div class="box-body">
                             <div id="toolbar">
 
-                                <div class="form-inline" role="form">
-                                    <div class="form-group extend_query_choice">
-                                        <span>服务名:</span>
-                                        <select id="serviceName" class="form-control">
-                                            <c:forEach var="name" items="${names}">
-                                                <option value="${name}">${name}</option>
-                                            </c:forEach>
-                                        </select>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <span>时间段:</span>
+                                        <input type="datetime">
+
+
                                     </div>
-                                    <button id="ok" type="submit" class=" form-control btn btn-default">查询
-                                    </button>
+                                    <br>
+                                    <div class="form-group">
+                                        <span>维度:</span>
+                                        <select></select>
+
+
+                                    </div>
+                                    <br>
+                                    <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
+                                    <button id="refresh" type="submit" class=" form-control btn btn-primary">刷新</button>
                                 </div>
 
                             </div>
