@@ -6,13 +6,13 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
-import com.zhizus.forest.metrics.client.Meta;
 import com.zhizus.forest.metrics.gen.MetaReq;
 import org.bson.BasicBSONObject;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +35,8 @@ public class MetricsDao {
     }
 
     public enum MetricField {
-        ID("_id"), CONFIG_ID("configId"), URI("uri"), CODES("codes"), COUNT("count"), TIME("time"), MAX_TIME("maxTime"), MIN_TIME("minTime");
+        ID("_id"), CONFIG_ID("configId"), URI("uri"), CODES("codes"), COUNT("count"), TIME("time"), MAX_TIME("maxTime"),
+        MIN_TIME("minTime"), SUCCESS_COUNT("successCount"), X_AXIS("xAxis");
         private String name;
 
         MetricField(String name) {
@@ -48,12 +49,15 @@ public class MetricsDao {
     }
 
     protected Document getDocument(MetaReq meta) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return new Document(MetricField.URI.getName(), meta.getUri())
                 .append(MetricField.CONFIG_ID.getName(), meta.getConfigId())
                 .append(MetricField.COUNT.getName(), meta.getCount())
                 .append(MetricField.MAX_TIME.getName(), meta.getMaxTime())
                 .append(MetricField.MIN_TIME.getName(), meta.getMinTime())
                 .append(MetricField.CODES.getName(), meta.getCodes())
+                .append(MetricField.SUCCESS_COUNT.getName(), meta.getCodes().get(0))
+                .append(MetricField.X_AXIS.getName(), format.format(new Date()))
                 .append(MetricField.TIME.getName(), meta.getTime());
     }
 
@@ -70,6 +74,69 @@ public class MetricsDao {
     public FindIterable<Document> find() {
         FindIterable<Document> documents = getCollection().find();
         return documents;
+    }
+
+    public JSONObject findByUri(String uri) {
+        FindIterable<Document> documents = getCollection().find(new BasicDBObject(MetricField.URI.getName(), uri));
+        JSONObject result = new JSONObject();
+        MongoCursor<Document> iterator = documents.iterator();
+        JSONArray count = new JSONArray();
+        JSONArray time = new JSONArray();
+        JSONArray minTimeArr = new JSONArray();
+        JSONArray maxTimeArr = new JSONArray();
+        JSONArray avgTimeArr = new JSONArray();
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
+            JSONArray countArray = new JSONArray();
+
+
+            countArray.add(document.getString(MetricField.X_AXIS.getName()));
+            countArray.add(document.getInteger(MetricField.COUNT.getName()));
+            count.add(countArray);
+
+            // maxTime
+            JSONArray maxTimeArray = new JSONArray();
+            maxTimeArray.add(document.getString(MetricField.X_AXIS.getName()));
+            maxTimeArray.add(document.getInteger(MetricField.MAX_TIME.getName()));
+            maxTimeArr.add(maxTimeArray);
+
+            // minTime
+            JSONArray minTimeArray = new JSONArray();
+            minTimeArray.add(document.getString(MetricField.X_AXIS.getName()));
+            minTimeArray.add(document.getInteger(MetricField.MIN_TIME.getName()));
+            minTimeArr.add(minTimeArray);
+
+            // avgTime
+            JSONArray avgTimeArray = new JSONArray();
+            avgTimeArray.add(document.getString(MetricField.X_AXIS.getName()));
+
+            Double timeDouble = Double.valueOf(document.getLong(MetricField.TIME.getName()));
+            Double countDouble = Double.valueOf(document.getInteger(MetricField.COUNT.getName()));
+            Double avgTime = timeDouble == null || countDouble == null || countDouble == 0 ? 0D : (timeDouble / countDouble);
+            avgTimeArray.add(avgTime);
+            avgTimeArr.add(avgTimeArray);
+
+        }
+
+        JSONObject maxTimeJSON = new JSONObject();
+        maxTimeJSON.put("name", "maxTime");
+        maxTimeJSON.put("data", maxTimeArr);
+        time.add(maxTimeJSON);
+
+        JSONObject minTimeJSON = new JSONObject();
+        minTimeJSON.put("name", "minTime");
+        minTimeJSON.put("data", minTimeArr);
+        time.add(minTimeJSON);
+
+        JSONObject avgTimeJSON = new JSONObject();
+        avgTimeJSON.put("name", "avgTime");
+        avgTimeJSON.put("data", avgTimeArr);
+        time.add(avgTimeJSON);
+
+        result.put("count", count);
+        result.put("time", time);
+
+        return result;
     }
 
     //db.getCollection('metrics20170103').aggregate([{$group:{_id:"$uri"} }])

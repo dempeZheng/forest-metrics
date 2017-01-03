@@ -9,10 +9,9 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * Created by Dempe on 2016/12/29.
@@ -31,6 +30,18 @@ public class MetricsController {
         return modelAndView;
     }
 
+    @RequestMapping("/detail")
+    public ModelAndView detail(@RequestParam String uri, ModelAndView modelAndView) throws Exception {
+        modelAndView.setViewName("forest/metrics_details");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping("/listByUri")
+    public String listByUri(@RequestParam String uri) {
+        return JSONArray.toJSONString(metricsDao.findByUri(uri));
+    }
+
     @ResponseBody
     @RequestMapping("/list")
     public String list() {
@@ -45,13 +56,13 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/uriList")
     public String uriList() {
-        return  JSONArray.toJSONString(metricsDao.listUri());
+        return JSONArray.toJSONString(metricsDao.listUri());
     }
 
     @ResponseBody
     @RequestMapping("/groupByUri")
     public String groupByUri() {
-        return  JSONArray.toJSONString(metricsDao.groupByUri());
+        return JSONArray.toJSONString(metricsDao.groupByUri());
     }
 
 }
