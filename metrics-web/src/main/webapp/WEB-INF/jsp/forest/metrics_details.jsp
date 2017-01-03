@@ -33,6 +33,16 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+        .content {
+            min-height: 50px;
+            padding: 0px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -42,7 +52,7 @@
     <jsp:include page="../siderbar.jsp"/>
     <div class="content-wrapper">
 
-        <section class="content">
+        <section class="content" style="min-height: 20px">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box  box-default">
@@ -52,24 +62,22 @@
                             </div><!-- /.box-tools -->
                         </div>
                         <div class="box-body">
-                            <table id="table">
-                                <div id="toolbar">
+                            <div id="toolbar">
 
-                                    <div class="form-inline" role="form">
-                                        <div class="form-group extend_query_choice">
-                                            <span>服务名:</span>
-                                            <select id="serviceName" class="form-control">
-                                                <c:forEach var="name" items="${names}">
-                                                    <option value="${name}">${name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <button id="ok" type="submit" class=" form-control btn btn-default">查询
-                                        </button>
+                                <div class="form-inline" role="form">
+                                    <div class="form-group extend_query_choice">
+                                        <span>服务名:</span>
+                                        <select id="serviceName" class="form-control">
+                                            <c:forEach var="name" items="${names}">
+                                                <option value="${name}">${name}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
-
+                                    <button id="ok" type="submit" class=" form-control btn btn-default">查询
+                                    </button>
                                 </div>
-                            </table>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,6 +101,18 @@
                     <div class="box  box-default">
                         <div class="box-body">
                             <div id="timeContainer"
+                                 style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box  box-default">
+                        <div class="box-body">
+                            <div id="timeDistributionContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                         </div>
                     </div>
@@ -167,6 +187,25 @@
             },
             series: [{}]
         };
+        var timeDistributionOptions = {
+            chart: {
+                renderTo: 'timeDistributionContainer',
+                type: 'column'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            series: [{}]
+        };
+
         $.getJSON('/metric/listByUri?uri=hello', function (data) {
             options.series[0].data = data.count;
             options.series[0].name = "count";
@@ -176,6 +215,10 @@
             timeOptions.series = data.time;
             timeOptions.title.text = "时延";
             var chart = new Highcharts.Chart(timeOptions);
+
+            timeDistributionOptions.series = data.timeDistribution;
+            timeDistributionOptions.title.text = "时延分布";
+            var chart = new Highcharts.Chart(timeDistributionOptions);
         });
 
     });

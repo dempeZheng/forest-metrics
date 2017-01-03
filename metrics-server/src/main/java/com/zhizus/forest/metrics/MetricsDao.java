@@ -3,6 +3,7 @@ package com.zhizus.forest.metrics;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
@@ -14,9 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Dempe on 2016/12/31 0031.
@@ -85,6 +84,20 @@ public class MetricsDao {
         JSONArray minTimeArr = new JSONArray();
         JSONArray maxTimeArr = new JSONArray();
         JSONArray avgTimeArr = new JSONArray();
+
+        Map<Integer, Integer> map = Maps.newHashMap();
+        map.put(0, 4);
+        map.put(10,8);
+        map.put(20, 7);
+        map.put(30, 5);
+        map.put(50, 0);
+        map.put(100, 10);
+        map.put(200, 3);
+        map.put(500, 0);
+        map.put(800, 0);
+        map.put(1000, 0);
+        map.put(2000, 0);
+        map.put(5000, 0);
         while (iterator.hasNext()) {
             Document document = iterator.next();
             JSONArray countArray = new JSONArray();
@@ -116,6 +129,7 @@ public class MetricsDao {
             avgTimeArray.add(avgTime);
             avgTimeArr.add(avgTimeArray);
 
+
         }
 
         JSONObject maxTimeJSON = new JSONObject();
@@ -133,8 +147,25 @@ public class MetricsDao {
         avgTimeJSON.put("data", avgTimeArr);
         time.add(avgTimeJSON);
 
+        JSONArray timeDisSeries = new JSONArray();
+        JSONObject timeDisJSON = new JSONObject();
+        JSONArray timeDis = new JSONArray();
+        Iterator<Map.Entry<Integer, Integer>> mapIterator = map.entrySet().iterator();
+        while (mapIterator.hasNext()){
+            Map.Entry<Integer, Integer> next = mapIterator.next();
+            JSONObject json = new JSONObject();
+            json.put("name", next.getKey());
+            json.put("y", next.getValue());
+            timeDis.add(json);
+        }
+        timeDisJSON.put("name", "time");
+        timeDisJSON.put("data", timeDis);
+        timeDisSeries.add(timeDisJSON);
+
+
         result.put("count", count);
         result.put("time", time);
+        result.put("timeDistribution", timeDisSeries);
 
         return result;
     }
