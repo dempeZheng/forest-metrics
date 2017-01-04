@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
+import com.zhizus.forest.metrics.MetricService;
 import com.zhizus.forest.metrics.MetricsDao;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class MetricsController {
     @Autowired
     private MetricsDao metricsDao;
 
+    @Autowired
+    private MetricService metricService;
+
     @RequestMapping("/index")
     public ModelAndView index(ModelAndView modelAndView) throws Exception {
         modelAndView.setViewName("forest/metrics");
@@ -39,7 +43,7 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/listByUri")
     public String listByUri(@RequestParam String uri) {
-        return JSONArray.toJSONString(metricsDao.findByUri(uri));
+        return metricService.findByUri(uri).toJSONString();
     }
 
     @ResponseBody

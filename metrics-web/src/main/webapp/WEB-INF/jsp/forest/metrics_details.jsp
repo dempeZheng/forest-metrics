@@ -80,7 +80,7 @@
                                     </div>
                                     <br>
                                     <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
-                                    <button id="refresh" type="submit" class=" form-control btn btn-primary">刷新</button>
+                                    <button id="refresh" type="submit" class=" form-control btn btn-info"><i class="fa-refresh"></i>刷新</button>
                                 </div>
 
                             </div>
@@ -204,6 +204,9 @@
             title: {
                 text: ''
             },
+            xAxis: {
+                type: 'category'
+            },
             yAxis: {
                 title: {
                     text: ''
@@ -213,8 +216,7 @@
         };
 
         $.getJSON('/metric/listByUri?uri=hello', function (data) {
-            options.series[0].data = data.count;
-            options.series[0].name = "count";
+            options.series = data.count;
             options.title.text = "请求数";
             var chart = new Highcharts.Chart(options);
 
