@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Dempe on 2017/1/4.
  */
 @Service
-public class MetricService {
+public class MetricChatService {
 
 
     @Autowired
@@ -73,6 +73,7 @@ public class MetricService {
         JSONArray maxTimeArr = new JSONArray();
         JSONArray avgTimeArr = new JSONArray();
         Map<Integer, Integer> regionMap = initTimeDistributionMap();
+        Map<Integer, Integer> codeMap = Maps.newHashMap();
 
         MongoCursor<Document> iterator = documents.iterator();
         while (iterator.hasNext()) {
@@ -104,6 +105,8 @@ public class MetricService {
             avgTimeArr.add(wrapArray(xAxis, avgTime));
 
             incRegionMap(regionMap, avgTime.intValue());
+
+            gatherCodes(codeMap, codes);
         }
 
 
@@ -114,9 +117,9 @@ public class MetricService {
 
         // 时延
         JSONArray timeSeries = new JSONArray();
+        addSeries(timeSeries, "avgTime", avgTimeArr);
         addSeries(timeSeries, "maxTime", maxTimeArr);
         addSeries(timeSeries, "minTime", minTimeArr);
-        addSeries(timeSeries, "avgTime", avgTimeArr);
 
 
         // 时延分布
@@ -124,16 +127,34 @@ public class MetricService {
         JSONArray timeDisSeries = new JSONArray();
         addSeries(timeDisSeries, "time", timeDis);
 
+        //
+        JSONArray pieCodes = mapToPieData(codeMap);
+        JSONArray codeSeries = new JSONArray();
+        addSeries(codeSeries, "codes", pieCodes);
+
 
         result.put("count", countSeries);
         result.put("time", timeSeries);
         result.put("timeDistribution", timeDisSeries);
+        result.put("codes", codeSeries);
         return result;
     }
 
     public JSONObject findByUri(String uri) {
         return wrapChatData(metricsDao.findByUri(uri));
     }
+
+    public void gatherCodes(Map<Integer, Integer> map, List<Integer> codes) {
+        for (int i = 0; i < codes.size(); i++) {
+            Integer value = map.get(i);
+            if (value == null) {
+                value = 0;
+            }
+            value = value + codes.get(i);
+            map.put(i, value);
+        }
+    }
+
 
     private void addSeries(JSONArray series, String name, JSONArray data) {
         JSONObject json = new JSONObject();
@@ -153,6 +174,25 @@ public class MetricService {
             columnData.add(json);
         }
         return columnData;
+    }
+
+    public JSONArray mapToPieData(Map<?, Integer> map) {
+        Iterator<Integer> iterator = map.values().iterator();
+        int total = 0;
+        while (iterator.hasNext()) {
+            total += iterator.next();
+        }
+        JSONArray pieData = new JSONArray();
+
+        Iterator<? extends Map.Entry<?, Integer>> mapIterator = map.entrySet().iterator();
+        while (mapIterator.hasNext()) {
+            Map.Entry<?, Integer> next = mapIterator.next();
+            JSONObject json = new JSONObject();
+            json.put("name", next.getKey());
+            json.put("y", next.getValue() * 100 / total);
+            pieData.add(json);
+        }
+        return pieData;
     }
 
 

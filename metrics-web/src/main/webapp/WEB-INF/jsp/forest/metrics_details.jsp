@@ -125,6 +125,18 @@
                 </div>
             </div>
         </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box  box-default">
+                        <div class="box-body">
+                            <div id="codesContainer"
+                                 style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </div>
     <jsp:include page="../footer.jsp"/>
@@ -214,6 +226,25 @@
             },
             series: [{}]
         };
+        var codesOptions = {
+            chart: {
+                renderTo: 'codesContainer',
+                type: 'pie'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            series: [{}]
+        };
 
         $.getJSON('/metric/listByUri?uri=hello', function (data) {
             options.series = data.count;
@@ -227,6 +258,10 @@
             timeDistributionOptions.series = data.timeDistribution;
             timeDistributionOptions.title.text = "时延分布";
             var chart = new Highcharts.Chart(timeDistributionOptions);
+
+            codesOptions.series = data.codes;
+            codesOptions.title.text = "时延分布";
+            var chart = new Highcharts.Chart(codesOptions);
         });
 
     });

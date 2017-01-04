@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
-import com.zhizus.forest.metrics.MetricService;
+import com.zhizus.forest.metrics.MetricChatService;
 import com.zhizus.forest.metrics.MetricsDao;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class MetricsController {
     private MetricsDao metricsDao;
 
     @Autowired
-    private MetricService metricService;
+    private MetricChatService metricChatService;
 
     @RequestMapping("/index")
     public ModelAndView index(ModelAndView modelAndView) throws Exception {
@@ -43,7 +43,7 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/listByUri")
     public String listByUri(@RequestParam String uri) {
-        return metricService.findByUri(uri).toJSONString();
+        return metricChatService.findByUri(uri).toJSONString();
     }
 
     @ResponseBody
