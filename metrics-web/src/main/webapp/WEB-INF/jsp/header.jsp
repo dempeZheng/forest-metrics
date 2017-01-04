@@ -3,13 +3,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <header class="main-header">
-    <a href="#" class="logo">
-        Metrics
-    </a>
+    <div class="logo">
+        <span class="logo-mini"><b>M</b></span>
+        <span class="logo-lg"><b>M</b>etrics监控平台</span>
+    </div>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">M</span>
+
         </a>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
@@ -25,23 +26,11 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="/dist/img/100.jpg" class="img-circle" alt="User Image">
                             <p>
-                                Alexander Pierce - Web Developer
+                                郑大侠
                                 <small>Member since Nov. 2012</small>
                             </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">

@@ -9,8 +9,7 @@
 <!-- FastClick -->
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js"></script>
-<%--<script src="/dist/js/pages/dashboard2.js"></script>--%>
-
+<script src="/dist/js/pages/dashboard2.js"></script>
 
 <script src="/bootstrap-table/bootstrap-table/src/bootstrap-table.js"></script>
 
@@ -21,5 +20,4 @@
 <script src="/plugins/jQuery-Validation-Engine/js/languages/jquery.validationEngine-zh_CN.js"></script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
-
 <script src="https://code.highcharts.com/js/themes/grid-light.js"></script>

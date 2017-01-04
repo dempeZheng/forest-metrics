@@ -10,8 +10,6 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <!-- jvectormap -->
-    <link rel="stylesheet" href="/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Font Awesome -->
     <%--<link rel="stylesheet" href="/libs/css/font-awesome.min.css">--%>
     <%--<!-- Ionicons -->--%>
@@ -206,20 +204,7 @@
     <div class="control-sidebar-bg"></div>
 </div>
 
-<!-- jQuery 2.2.0 -->
-<script src="/plugins/jQuery/jQuery-2.2.0.min.js"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="/dist/js/app.min.js"></script>
 
-<!-- AdminLTE for demo purposes -->
-<script src="/dist/js/demo.js"></script>
-<%--<script src="/dist/js/pages/dashboard.js"></script>--%>
 <jsp:include page="../common/script.jsp"/>
 <script>
 
