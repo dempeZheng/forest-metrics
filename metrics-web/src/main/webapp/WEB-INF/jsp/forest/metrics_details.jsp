@@ -57,30 +57,53 @@
                 <div class="col-xs-12">
                     <div class="box  box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">监控详情：serviceName/${param.uri}</h3>
-                            <div class="box-tools pull-right">
-                            </div><!-- /.box-tools -->
+                            <section class="content-header">
+                                <h1>
+                                    查询条件
+                                    <small>监控详情</small>
+                                </h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                                    <li><a href="#">serviceName</a></li>
+                                    <li class="active">${param.uri}</li>
+                                </ol>
+                            </section>
+
                         </div>
                         <div class="box-body">
                             <div id="toolbar">
-
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <span>时间段:</span>
-                                        <input type="datetime">
-
-
+                                <div class="form-inline" role="form">
+                                    <div class="control-group">
+                                        <select id="ipSelect" class="form-control">
+                                            <option value="">所有的ip</option>
+                                        </select>
+                                        <select id="roomSelect" class="form-control">
+                                            <option value="">所有的机房</option>
+                                        </select>
+                                        <select id="versionSelect" class="form-control">
+                                            <option value="">所有的版本</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="stime">
+                                        <strong class="input-strong-input">至</strong>
+                                        <input type="text" class="form-control" id="etime">
+                                        <strong class="form-control">&nbsp;</strong>
+                                        <select id="fastTime" class="form-control">
+                                            <option value="">快速选择时间段...</option>
+                                            <option value="30">近30分钟</option>
+                                            <option value="60">近1小时</option>
+                                            <option value="360">近6小时</option>
+                                            <option value="720">近12小时</option>
+                                            <option value="1440">近1天</option>
+                                            <option value="2880">近2天</option>
+                                            <option value="10080">近1周</option>
+                                            <option value="43200">近1个月</option>
+                                        </select>
+                                        <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
+                                        <button id="refresh" type="submit" class=" form-control btn btn-info"><i
+                                                class="fa-refresh"></i>刷新
+                                        </button>
                                     </div>
-                                    <br>
-                                    <div class="form-group">
-                                        <span>维度:</span>
-                                        <select></select>
 
-
-                                    </div>
-                                    <br>
-                                    <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
-                                    <button id="refresh" type="submit" class=" form-control btn btn-info"><i class="fa-refresh"></i>刷新</button>
                                 </div>
 
                             </div>
@@ -169,8 +192,8 @@
                 renderTo: 'countContainer',
                 type: 'spline'
             },
-            exporting:{
-                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            exporting: {
+                enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             credits: {
                 enabled: false
@@ -181,7 +204,7 @@
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: {
-                    second:'%H:%M:%S'
+                    second: '%H:%M:%S'
                 }
 
 
@@ -199,8 +222,8 @@
                 renderTo: 'timeContainer',
                 type: 'spline'
             },
-            exporting:{
-                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            exporting: {
+                enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             credits: {
                 enabled: false
@@ -226,8 +249,8 @@
             credits: {
                 enabled: false
             },
-            exporting:{
-                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            exporting: {
+                enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             title: {
                 text: ''
@@ -267,8 +290,8 @@
             credits: {
                 enabled: false
             },
-            exporting:{
-                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            exporting: {
+                enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             title: {
                 text: ''
