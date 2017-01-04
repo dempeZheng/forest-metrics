@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Forest管理后台</title>
+    <title>Metrics</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -60,12 +60,13 @@
                                                 <div class="form-group extend_query_choice">
                                                     <span>服务名:</span>
                                                     <select id="serviceName" class="form-control">
-                                                        <c:forEach  var="name" items="${names}">
+                                                        <c:forEach var="name" items="${names}">
                                                             <option value="${name}">${name}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
-                                                <button id="ok" type="submit" class=" form-control btn btn-default">查询</button>
+                                                <button id="ok" type="submit" class=" form-control btn btn-default">查询
+                                                </button>
                                             </div>
 
                                         </div>
@@ -140,7 +141,10 @@
                             sortable: 'true',
                             visible: true,
                             align: 'center',
-                            width: '15%'
+                            width: '15%',
+                            formatter: function (val, row, index) {
+                                return '<a href="/metric/detail?uri=' + row._id + '">' + row._id + '</a>';
+                            }
                         },
                         {
                             field: 'count',
@@ -152,9 +156,10 @@
                         },
                         {field: 'maxTime', title: 'maxTime(毫秒)', sortable: 'true', align: 'center', width: '15%'},
                         {field: 'minTime', title: 'minTime(毫秒)', sortable: 'true', align: 'center', width: '15%'},
-                        {field: 'time', title: 'avgTime(毫秒)', sortable: 'true', align: 'center', width: '15%',
-                            formatter:function (val, row,index) {
-                                return (row.time/row.count).toFixed(2);
+                        {
+                            field: 'time', title: 'avgTime(毫秒)', sortable: 'true', align: 'center', width: '15%',
+                            formatter: function (val, row, index) {
+                                return (row.time / row.count).toFixed(2);
                             }
                         },
                         {
@@ -176,8 +181,7 @@
                     toolbar: '#toolbar',
                     url: '/metric/groupByUri',
                     queryParams: function queryParams(params) {   //设置查询参数
-                        var param = {
-                        };
+                        var param = {};
                         return param;
                     }
                 });

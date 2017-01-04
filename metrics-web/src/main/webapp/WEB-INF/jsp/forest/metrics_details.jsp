@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Forest管理后台</title>
+    <title>Metrics</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -122,6 +122,15 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box  box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">请求数</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                        title="Collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                                        title="Remove"><i class="fa fa-times"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
                         <div class="box-body">
                             <div id="countContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -134,6 +143,15 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box  box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">时延</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                        title="Collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                                        title="Remove"><i class="fa fa-times"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
                         <div class="box-body">
                             <div id="timeContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -146,6 +164,15 @@
             <div class="row">
                 <div class="col-xs-8">
                     <div class="box  box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">时延分布</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                        title="Collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                                        title="Remove"><i class="fa fa-times"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
                         <div class="box-body">
                             <div id="timeDistributionContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -154,6 +181,15 @@
                 </div>
                 <div class="col-xs-4">
                     <div class="box  box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">返回状态码</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                        title="Collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                                        title="Remove"><i class="fa fa-times"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
                         <div class="box-body">
                             <div id="codesContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -210,9 +246,9 @@
             },
             xAxis: {
                 type: 'datetime',
-                dateTimeLabelFormats: {
-                    minute: '%e. %b %H:%M',
-                }
+//                dateTimeLabelFormats: {
+//                    minute: '%e. %b %H:%M',
+//                }
             },
 
             yAxis: {
@@ -317,19 +353,20 @@
 
         $.getJSON(url, function (data) {
             options.series = data.count;
-            options.title.text = "请求数";
+//            options.title.text = "请求数";
+            Highcharts.setOptions({ global: { useUTC: false } });
             var chart = new Highcharts.Chart(options);
 
             timeOptions.series = data.time;
-            timeOptions.title.text = "时延";
+//            timeOptions.title.text = "时延";
             var chart = new Highcharts.Chart(timeOptions);
 
             timeDistributionOptions.series = data.timeDistribution;
-            timeDistributionOptions.title.text = "时延分布";
+//            timeDistributionOptions.title.text = "时延分布";
             var chart = new Highcharts.Chart(timeDistributionOptions);
 
             codesOptions.series = data.codes;
-            codesOptions.title.text = "状态码比例分布";
+//            codesOptions.title.text = "状态码比例分布";
             var chart = new Highcharts.Chart(codesOptions);
         });
     }

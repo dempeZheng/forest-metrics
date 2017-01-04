@@ -24,13 +24,19 @@ public class Meta {
 
     public Meta code(Metrics.Status status) {
         int code = status.getValue();
-        codeArr[code] = ++codeArr[code];
+        codeArr[code] = codeArr[code] + 1;
         return this;
     }
 
     public Meta gather(long time) {
         synchronized (this) {
             this.time += time;
+        }
+        if(maxTime<time){
+            maxTime= (int) time;
+        }
+        if(minTime>time){
+            minTime = (int) time;
         }
         count.incrementAndGet();
         return this;

@@ -99,7 +99,7 @@ public class MetricsDao {
                         .append(MetricField.MIN_TIME.getName(), new BasicDBObject("$min", "$" + MetricField.MIN_TIME.getName()))
                         .append(MetricField.TIME.getName(), new BasicDBObject("$sum", "$" + MetricField.TIME.getName()))
                         .append("array", new BasicDBObject("$push", "$" + MetricField.CODES.getName()))
-                ), new BasicDBObject().append("$sort", new BasicDBObject(MetricField.X_AXIS.getName(), 1)));
+                ), new BasicDBObject().append("$sort", new BasicDBObject(MetricField.ID.getName(), 1)));
         return getCollection(serviceName).aggregate(pipeline);
     }
 
