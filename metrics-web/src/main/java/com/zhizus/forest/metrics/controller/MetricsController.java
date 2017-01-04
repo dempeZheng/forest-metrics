@@ -34,13 +34,20 @@ public class MetricsController {
     @RequestMapping("/detail")
     public ModelAndView detail(@RequestParam String uri, ModelAndView modelAndView) throws Exception {
         modelAndView.setViewName("forest/metrics_details");
+        modelAndView.addObject("ips", metricsDao.listFields(serviceName, uri, "ip"));
+        modelAndView.addObject("version", metricsDao.listFields(serviceName, uri, "version"));
+        modelAndView.addObject("rooms", metricsDao.listFields(serviceName, uri, "roomId"));
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping("/listByUri")
-    public String listByUri(@RequestParam String uri) {
-        return metricChatService.findByUri(serviceName, uri).toJSONString();
+    public String listByUri(@RequestParam String uri,
+                            @RequestParam(required = false) String ip,
+                            @RequestParam(required = false) String roomId,
+                            @RequestParam(required = false) String version,
+                            @RequestParam(required = false) String type) {
+        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type).toJSONString();
     }
 
     @ResponseBody

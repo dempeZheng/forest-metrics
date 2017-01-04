@@ -76,12 +76,21 @@
                                     <div class="control-group">
                                         <select id="ipSelect" class="form-control">
                                             <option value="">所有的ip</option>
+                                            <c:forEach var="ip" items="${ips}">
+                                                <option value="${ip}">${ip}</option>
+                                            </c:forEach>
                                         </select>
                                         <select id="roomSelect" class="form-control">
                                             <option value="">所有的机房</option>
+                                            <c:forEach var="room" items="${rooms}">
+                                                <option value="${room}">${room}</option>
+                                            </c:forEach>
                                         </select>
                                         <select id="versionSelect" class="form-control">
                                             <option value="">所有的版本</option>
+                                            <c:forEach var="version" items="${versions}">
+                                                <option value="${version}">${version}</option>
+                                            </c:forEach>
                                         </select>
                                         <input type="text" class="form-control" id="stime">
                                         <strong class="input-strong-input">至</strong>
@@ -99,9 +108,6 @@
                                             <option value="43200">近1个月</option>
                                         </select>
                                         <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
-                                        <button id="refresh" type="submit" class=" form-control btn btn-info"><i
-                                                class="fa-refresh"></i>刷新
-                                        </button>
                                     </div>
 
                                 </div>
@@ -182,11 +188,12 @@
 <script>
 
     $('#ok').click(function () {
-        $('#table').bootstrapTable('refresh');
+        refresh();
     });
 
-    $(document).ready(function () {
-
+    function queryChart(ip, roomId, version, startTime, endTime) {
+        var url = "/metric/listByUri?uri=" + '${param.uri}' + "&ip=" + ip + '&roomId=' + roomId + '&version=' + version
+                + '&startTime=' + startTime + '&endTime=' + endTime;
         var options = {
             chart: {
                 renderTo: 'countContainer',
@@ -216,7 +223,6 @@
             },
             series: [{}]
         };
-
         var timeOptions = {
             chart: {
                 renderTo: 'timeContainer',
@@ -305,7 +311,7 @@
             series: [{}]
         };
 
-        $.getJSON('/metric/listByUri?uri=hello', function (data) {
+        $.getJSON(url, function (data) {
             options.series = data.count;
             options.title.text = "请求数";
             var chart = new Highcharts.Chart(options);
@@ -322,7 +328,18 @@
             codesOptions.title.text = "状态码比例分布";
             var chart = new Highcharts.Chart(codesOptions);
         });
+    }
+    function refresh() {
+        var ip = $('#ipSelect '+ " option:selected").val();
+        var roomId = $('#roomSelect'+ " option:selected").val();
+        var version = $('#versionSelect'+ " option:selected").val();
+        var startTime = $('#startTime'+ " option:selected").val();
+        var endTime = $('#endTime'+ " option:selected").val();
+        queryChart(ip, roomId, version, startTime, endTime);
+    }
 
+    $(document).ready(function () {
+        refresh();
     });
 
 </script>

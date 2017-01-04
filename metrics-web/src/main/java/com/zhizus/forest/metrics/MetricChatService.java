@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mongodb.client.FindIterable;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCursor;
 import com.zhizus.forest.metrics.client.Metrics;
 import org.bson.Document;
@@ -65,7 +65,7 @@ public class MetricChatService {
         return array;
     }
 
-    public JSONObject wrapChatData(FindIterable<Document> documents) {
+    public JSONObject wrapChatData(AggregateIterable<Document> documents) {
         JSONObject result = new JSONObject();
 
         JSONArray countArr = new JSONArray();
@@ -80,7 +80,7 @@ public class MetricChatService {
         while (iterator.hasNext()) {
             Document document = iterator.next();
 
-            Long xAxis = document.getLong(MetricsDao.MetricField.X_AXIS.getName());
+            Long xAxis = document.getLong(MetricsDao.MetricField.ID.getName());
 
             Integer maxTime = document.getInteger(MetricsDao.MetricField.MAX_TIME.getName());
             Integer minTime = document.getInteger(MetricsDao.MetricField.MIN_TIME.getName());
@@ -90,12 +90,13 @@ public class MetricChatService {
             Double countDouble = Double.valueOf(count);
             Double avgTime = timeDouble == null || countDouble == null || countDouble == 0 ? 0D : (timeDouble / countDouble);
 
-            List<Integer> codes = (List<Integer>) (document.get(MetricsDao.MetricField.CODES.getName()));
+            List<List<Integer>> codes = (List<List<Integer>>) (document.get("array"));
+            gatherCodes(codeMap, codes);
+
             int errCount = 0;
             if (codes != null && count != null) {
-                errCount = count - codes.get(0) < 0 ? 0 : count - codes.get(0);
+                errCount = codeMap.get(0);
             }
-
             countArr.add(wrapArray(xAxis, count));
             errCountArr.add(wrapArray(xAxis, errCount));
 
@@ -108,20 +109,19 @@ public class MetricChatService {
 
             incRegionMap(regionMap, avgTime.intValue());
 
-            gatherCodes(codeMap, codes);
         }
 
 
         // 请求数
         JSONArray countSeries = new JSONArray();
         addSeries(countSeries, "count", countArr);
-        addSeries(countSeries, "errCount", errCountArr);
+        addSeries(countSeries, "errCount", errCountArr, false);
 
         // 时延
         JSONArray timeSeries = new JSONArray();
         addSeries(timeSeries, "avgTime", avgTimeArr);
-        addSeries(timeSeries, "maxTime", maxTimeArr);
-        addSeries(timeSeries, "minTime", minTimeArr);
+        addSeries(timeSeries, "maxTime", maxTimeArr, false);
+        addSeries(timeSeries, "minTime", minTimeArr, false);
 
 
         // 时延分布
@@ -142,26 +142,39 @@ public class MetricChatService {
         return result;
     }
 
-    public JSONObject findByUri(String serviceName, String uri) {
-        return wrapChatData(metricsDao.findByUri(serviceName, uri));
+    public JSONObject groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type) {
+        AggregateIterable<Document> documents = metricsDao.groupByXAxis(serviceName, uri, ip, roomId, version, type);
+
+        return wrapChatData(documents);
     }
 
-    public void gatherCodes(Map<Integer, Integer> map, List<Integer> codes) {
-        for (int i = 0; i < codes.size(); i++) {
-            Integer value = map.get(i);
-            if (value == null) {
-                value = 0;
+    public void gatherCodes(Map<Integer, Integer> map, List<List<Integer>> codes) {
+        for (List<Integer> code : codes) {
+            for (int i = 0; i < code.size(); i++) {
+
+                Integer value = map.get(i);
+                if (value == null) {
+                    value = 0;
+                }
+                value = value + code.get(i);
+                map.put(i, value);
             }
-            value = value + codes.get(i);
-            map.put(i, value);
         }
     }
-
 
     private void addSeries(JSONArray series, String name, JSONArray data) {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("data", data);
+        json.put("visible", true);
+        series.add(json);
+    }
+
+    private void addSeries(JSONArray series, String name, JSONArray data, boolean visible) {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("data", data);
+        json.put("visible", visible);
         series.add(json);
     }
 
