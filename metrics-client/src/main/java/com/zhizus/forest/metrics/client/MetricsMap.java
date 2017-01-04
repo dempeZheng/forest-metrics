@@ -2,6 +2,7 @@ package com.zhizus.forest.metrics.client;
 
 import com.google.common.base.Strings;
 import com.zhizus.forest.metrics.gen.Ack;
+import com.zhizus.forest.metrics.gen.MetaReq;
 import com.zhizus.forest.metrics.gen.MetricService;
 import com.zhizus.forest.thrift.client.DefaultThriftClient;
 import com.zhizus.forest.thrift.client.registry.conf.ConfRegistry;
@@ -37,7 +38,8 @@ public class MetricsMap extends ConcurrentHashMap<String, Meta> {
                             LOGGER.error("config id is empty.");
                             continue;
                         }
-                        Ack ack = sendMeta(meta);
+
+                        Ack ack = sendMeta(meta, configId);
                         //
 
 
@@ -51,10 +53,12 @@ public class MetricsMap extends ConcurrentHashMap<String, Meta> {
         }, 1, 1, TimeUnit.SECONDS);
     }
 
-    public Ack sendMeta(Meta meta) throws Exception {
+    public Ack sendMeta(Meta meta, String configId) throws Exception {
         LOGGER.info("meta:{}", meta);
         MetricService.Client iface = client.iface(MetricService.Client.class);
-        return iface.sendMeta(meta.toMetaReq());
+        MetaReq metaReq = meta.toMetaReq();
+        metaReq.setConfigId(configId);
+        return iface.sendMeta(metaReq);
     }
 
     public Ack getConfigId(Config config) throws Exception {

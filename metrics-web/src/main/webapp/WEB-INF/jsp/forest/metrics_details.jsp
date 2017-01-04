@@ -260,7 +260,7 @@
             var chart = new Highcharts.Chart(timeDistributionOptions);
 
             codesOptions.series = data.codes;
-            codesOptions.title.text = "时延分布";
+            codesOptions.title.text = "状态码比例分布";
             var chart = new Highcharts.Chart(codesOptions);
         });
 

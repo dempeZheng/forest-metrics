@@ -22,7 +22,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
     public String version;
     public String type;
 
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    /**
+     * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+     */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
         SERVICE_NAME((short) 1, "serviceName"),
         IP((short) 2, "ip"),
@@ -162,7 +164,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         this.serviceName = null;
     }
 
-    /** Returns true if field serviceName is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field serviceName is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetServiceName() {
         return this.serviceName != null;
     }
@@ -186,7 +190,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         this.ip = null;
     }
 
-    /** Returns true if field ip is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field ip is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetIp() {
         return this.ip != null;
     }
@@ -210,7 +216,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         this.roomId = null;
     }
 
-    /** Returns true if field roomId is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field roomId is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetRoomId() {
         return this.roomId != null;
     }
@@ -234,7 +242,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         this.version = null;
     }
 
-    /** Returns true if field version is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field version is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetVersion() {
         return this.version != null;
     }
@@ -258,7 +268,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         this.type = null;
     }
 
-    /** Returns true if field type is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field type is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetType() {
         return this.type != null;
     }
@@ -335,7 +347,9 @@ public class MetaConfig implements org.apache.thrift.TBase<MetaConfig, MetaConfi
         throw new IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+     */
     public boolean isSet(_Fields field) {
         if (field == null) {
             throw new IllegalArgumentException();

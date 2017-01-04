@@ -1,12 +1,8 @@
 package com.zhizus.forest.metrics.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCursor;
 import com.zhizus.forest.metrics.MetricChatService;
 import com.zhizus.forest.metrics.MetricsDao;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/metric")
 public class MetricsController {
 
+    private final static String serviceName = "forest";
 
     @Autowired
     private MetricsDao metricsDao;
@@ -43,30 +40,19 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/listByUri")
     public String listByUri(@RequestParam String uri) {
-        return metricChatService.findByUri(uri).toJSONString();
-    }
-
-    @ResponseBody
-    @RequestMapping("/list")
-    public String list() {
-        FindIterable<Document> documents = metricsDao.find();
-        MongoCursor<Document> iterator = documents.iterator();
-        while (iterator.hasNext()) {
-            Document document = iterator.next();
-        }
-        return JSON.toJSONString(documents);
+        return metricChatService.findByUri(uri, serviceName).toJSONString();
     }
 
     @ResponseBody
     @RequestMapping("/uriList")
     public String uriList() {
-        return JSONArray.toJSONString(metricsDao.listUri());
+        return JSONArray.toJSONString(metricsDao.listUri(serviceName));
     }
 
     @ResponseBody
     @RequestMapping("/groupByUri")
     public String groupByUri() {
-        return JSONArray.toJSONString(metricsDao.groupByUri());
+        return JSONArray.toJSONString(metricsDao.groupByUri(serviceName));
     }
 
 }

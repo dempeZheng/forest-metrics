@@ -19,7 +19,7 @@ $(function () {
     $('iframe').attr('src', href);
     initNavigation(href);
 
-    $(window).on('blur',function() {
+    $(window).on('blur', function () {
         $('.dropdown-toggle').parent().removeClass('open');
     });
 });

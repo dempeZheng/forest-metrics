@@ -26,7 +26,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
     public int minTime;
     public List<Integer> codes;
 
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    /**
+     * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+     */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
         CONFIG_ID((short) 1, "configId"),
         URI((short) 2, "uri"),
@@ -212,7 +214,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         this.configId = null;
     }
 
-    /** Returns true if field configId is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field configId is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetConfigId() {
         return this.configId != null;
     }
@@ -236,7 +240,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         this.uri = null;
     }
 
-    /** Returns true if field uri is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field uri is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetUri() {
         return this.uri != null;
     }
@@ -261,7 +267,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         __isset_bit_vector.clear(__COUNT_ISSET_ID);
     }
 
-    /** Returns true if field count is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field count is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetCount() {
         return __isset_bit_vector.get(__COUNT_ISSET_ID);
     }
@@ -284,7 +292,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         __isset_bit_vector.clear(__TIME_ISSET_ID);
     }
 
-    /** Returns true if field time is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field time is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetTime() {
         return __isset_bit_vector.get(__TIME_ISSET_ID);
     }
@@ -307,7 +317,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         __isset_bit_vector.clear(__MAXTIME_ISSET_ID);
     }
 
-    /** Returns true if field maxTime is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field maxTime is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetMaxTime() {
         return __isset_bit_vector.get(__MAXTIME_ISSET_ID);
     }
@@ -330,7 +342,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         __isset_bit_vector.clear(__MINTIME_ISSET_ID);
     }
 
-    /** Returns true if field minTime is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field minTime is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetMinTime() {
         return __isset_bit_vector.get(__MINTIME_ISSET_ID);
     }
@@ -367,7 +381,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         this.codes = null;
     }
 
-    /** Returns true if field codes is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field codes is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetCodes() {
         return this.codes != null;
     }
@@ -466,7 +482,9 @@ public class MetaReq implements org.apache.thrift.TBase<MetaReq, MetaReq._Fields
         throw new IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+     */
     public boolean isSet(_Fields field) {
         if (field == null) {
             throw new IllegalArgumentException();

@@ -1,4 +1,4 @@
-(function(window) {
+(function (window) {
     var re = {
         not_string: /[^s]/,
         number: /[dief]/,
@@ -19,7 +19,7 @@
         return sprintf.format.call(null, cache[key], arguments)
     }
 
-    sprintf.format = function(parse_tree, argv) {
+    sprintf.format = function (parse_tree, argv) {
         var cursor = 1, tree_length = parse_tree.length, node_type = "", arg, output = [], i, k, match, pad, pad_character, pad_length, is_positive = true, sign = ""
         for (i = 0; i < tree_length; i++) {
             node_type = get_type(parse_tree[i])
@@ -59,35 +59,35 @@
                 switch (match[8]) {
                     case "b":
                         arg = arg.toString(2)
-                    break
+                        break
                     case "c":
                         arg = String.fromCharCode(arg)
-                    break
+                        break
                     case "d":
                     case "i":
                         arg = parseInt(arg, 10)
-                    break
+                        break
                     case "e":
                         arg = match[7] ? arg.toExponential(match[7]) : arg.toExponential()
-                    break
+                        break
                     case "f":
                         arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg)
-                    break
+                        break
                     case "o":
                         arg = arg.toString(8)
-                    break
+                        break
                     case "s":
                         arg = ((arg = String(arg)) && match[7] ? arg.substring(0, match[7]) : arg)
-                    break
+                        break
                     case "u":
                         arg = arg >>> 0
-                    break
+                        break
                     case "x":
                         arg = arg.toString(16)
-                    break
+                        break
                     case "X":
                         arg = arg.toString(16).toUpperCase()
-                    break
+                        break
                 }
                 if (!is_positive || (re.number.test(match[8]) && match[3])) {
                     sign = is_positive ? "+" : "-"
@@ -107,7 +107,7 @@
 
     sprintf.cache = {}
 
-    sprintf.parse = function(fmt) {
+    sprintf.parse = function (fmt) {
         var _fmt = fmt, match = [], parse_tree = [], arg_names = 0
         while (_fmt) {
             if ((match = re.text.exec(_fmt)) !== null) {
@@ -155,7 +155,7 @@
         return parse_tree
     }
 
-    var vsprintf = function(fmt, argv, _argv) {
+    var vsprintf = function (fmt, argv, _argv) {
         _argv = (argv || []).slice(0)
         _argv.splice(0, 0, fmt)
         return sprintf.apply(null, _argv)
@@ -184,7 +184,7 @@
         window.vsprintf = vsprintf
 
         if (typeof define === "function" && define.amd) {
-            define(function() {
+            define(function () {
                 return {
                     sprintf: sprintf,
                     vsprintf: vsprintf

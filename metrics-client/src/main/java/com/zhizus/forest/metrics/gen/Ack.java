@@ -16,7 +16,9 @@ public class Ack implements org.apache.thrift.TBase<Ack, Ack._Fields>, java.io.S
     public short code;
     public String configId;
 
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    /**
+     * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+     */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
         CODE((short) 1, "code"),
         CONFIG_ID((short) 2, "configId");
@@ -140,7 +142,9 @@ public class Ack implements org.apache.thrift.TBase<Ack, Ack._Fields>, java.io.S
         __isset_bit_vector.clear(__CODE_ISSET_ID);
     }
 
-    /** Returns true if field code is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field code is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetCode() {
         return __isset_bit_vector.get(__CODE_ISSET_ID);
     }
@@ -162,7 +166,9 @@ public class Ack implements org.apache.thrift.TBase<Ack, Ack._Fields>, java.io.S
         this.configId = null;
     }
 
-    /** Returns true if field configId is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field configId is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetConfigId() {
         return this.configId != null;
     }
@@ -206,7 +212,9 @@ public class Ack implements org.apache.thrift.TBase<Ack, Ack._Fields>, java.io.S
         throw new IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+     */
     public boolean isSet(_Fields field) {
         if (field == null) {
             throw new IllegalArgumentException();

@@ -140,8 +140,8 @@ public class MetricChatService {
         return result;
     }
 
-    public JSONObject findByUri(String uri) {
-        return wrapChatData(metricsDao.findByUri(uri));
+    public JSONObject findByUri(String uri,String serviceName) {
+        return wrapChatData(metricsDao.findByUri(uri,serviceName));
     }
 
     public void gatherCodes(Map<Integer, Integer> map, List<Integer> codes) {
