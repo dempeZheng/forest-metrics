@@ -55,7 +55,7 @@
         <section class="content" style="min-height: 20px">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box  box-default">
+                    <div class="box  box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">监控详情：serviceName/${param.uri}</h3>
                             <div class="box-tools pull-right">
@@ -92,7 +92,7 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box  box-default">
+                    <div class="box  box-solid">
                         <div class="box-body">
                             <div id="countContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -104,7 +104,7 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box  box-default">
+                    <div class="box  box-solid">
                         <div class="box-body">
                             <div id="timeContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -115,20 +115,16 @@
         </section>
         <section class="content">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="box  box-default">
+                <div class="col-xs-8">
+                    <div class="box  box-solid">
                         <div class="box-body">
                             <div id="timeDistributionContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box  box-default">
+                <div class="col-xs-4">
+                    <div class="box  box-solid">
                         <div class="box-body">
                             <div id="codesContainer"
                                  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -173,11 +169,22 @@
                 renderTo: 'countContainer',
                 type: 'spline'
             },
+            exporting:{
+                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            },
             credits: {
                 enabled: false
             },
             title: {
                 text: ''
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    second:'%H:%M:%S'
+                }
+
+
             },
             yAxis: {
                 title: {
@@ -192,11 +199,17 @@
                 renderTo: 'timeContainer',
                 type: 'spline'
             },
+            exporting:{
+                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+            },
             credits: {
                 enabled: false
             },
             title: {
                 text: ''
+            },
+            xAxis: {
+                type: 'datetime',
             },
             yAxis: {
                 title: {
@@ -212,6 +225,9 @@
             },
             credits: {
                 enabled: false
+            },
+            exporting:{
+                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             title: {
                 text: ''
@@ -231,8 +247,28 @@
                 renderTo: 'codesContainer',
                 type: 'pie'
             },
+
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
             credits: {
                 enabled: false
+            },
+            exporting:{
+                enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
             },
             title: {
                 text: ''

@@ -22,7 +22,7 @@ public class MetricsClientSimulator {
         for (int i = 0; i < 10000; i++) {
             String uri = uriList.get(rand.nextInt(1000) % 4);
             Metrics metrics = Metrics.startWithUri(uri);
-            int time = rand.nextInt(1000);
+            int time = rand.nextInt(100);
             TimeUnit.MILLISECONDS.sleep(time);
             LOGGER.info("uri:{},sleep time:{}", uri, time);
             metrics.success();

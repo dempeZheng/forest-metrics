@@ -49,14 +49,14 @@ public class MetricsDao {
     }
 
     protected Document getDocument(MetaReq meta, MetaConfig config) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return new Document(MetricField.URI.getName(), meta.getUri())
                 .append(MetricField.COUNT.getName(), meta.getCount())
                 .append(MetricField.MAX_TIME.getName(), meta.getMaxTime())
                 .append(MetricField.MIN_TIME.getName(), meta.getMinTime())
                 .append(MetricField.CODES.getName(), meta.getCodes())
                 .append(MetricField.SUCCESS_COUNT.getName(), meta.getCodes().get(0))
-                .append(MetricField.X_AXIS.getName(), format.format(new Date()))
+                .append(MetricField.X_AXIS.getName(), System.currentTimeMillis())
                 .append(MetricField.VERSION.getName(), config.getVersion())
                 .append(MetricField.TYPE.getName(), config.getType())
                 .append(MetricField.IP.getName(), config.getIp())

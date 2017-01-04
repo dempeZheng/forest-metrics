@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
+import com.zhizus.forest.metrics.client.Metrics;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,7 +80,8 @@ public class MetricChatService {
         while (iterator.hasNext()) {
             Document document = iterator.next();
 
-            String xAxis = document.getString(MetricsDao.MetricField.X_AXIS.getName());
+            Long xAxis = document.getLong(MetricsDao.MetricField.X_AXIS.getName());
+
             Integer maxTime = document.getInteger(MetricsDao.MetricField.MAX_TIME.getName());
             Integer minTime = document.getInteger(MetricsDao.MetricField.MIN_TIME.getName());
             Integer count = document.getInteger(MetricsDao.MetricField.COUNT.getName());
@@ -140,8 +142,8 @@ public class MetricChatService {
         return result;
     }
 
-    public JSONObject findByUri(String uri,String serviceName) {
-        return wrapChatData(metricsDao.findByUri(uri,serviceName));
+    public JSONObject findByUri(String serviceName, String uri) {
+        return wrapChatData(metricsDao.findByUri(serviceName, uri));
     }
 
     public void gatherCodes(Map<Integer, Integer> map, List<Integer> codes) {
@@ -192,7 +194,16 @@ public class MetricChatService {
             json.put("y", next.getValue() * 100 / total);
             pieData.add(json);
         }
-        return pieData;
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < pieData.size(); i++) {
+            JSONObject json = pieData.getJSONObject(i);
+            if (json.getIntValue("y") > 0) {
+                Metrics.Status status = Metrics.Status.getStatus(i);
+                json.put("name", status.name());
+                result.add(json);
+            }
+        }
+        return result;
     }
 
 

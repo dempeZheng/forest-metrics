@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/metric")
 public class MetricsController {
 
-    private final static String serviceName = "forest";
+    private final static String serviceName = "forest-metrics";
 
     @Autowired
     private MetricsDao metricsDao;
@@ -40,7 +40,7 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/listByUri")
     public String listByUri(@RequestParam String uri) {
-        return metricChatService.findByUri(uri, serviceName).toJSONString();
+        return metricChatService.findByUri(serviceName, uri).toJSONString();
     }
 
     @ResponseBody

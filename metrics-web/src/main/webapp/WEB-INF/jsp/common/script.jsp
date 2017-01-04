@@ -21,4 +21,5 @@
 <script src="/plugins/jQuery-Validation-Engine/js/languages/jquery.validationEngine-zh_CN.js"></script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<script src="https://code.highcharts.com/js/themes/grid-light.js"></script>

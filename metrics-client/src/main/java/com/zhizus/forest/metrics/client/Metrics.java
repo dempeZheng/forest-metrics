@@ -54,6 +54,19 @@ public class Metrics extends StopWatch {
             this.value = value;
         }
 
+        public static Status getStatus(int value) {
+            switch (value) {
+                case 0:
+                    return SUCCESS;
+                case 1:
+                    return FAILED;
+                case 2:
+                    return TIMEOUT;
+
+            }
+            return SUCCESS;
+        }
+
         public int getValue() {
             return value;
         }
