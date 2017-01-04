@@ -211,11 +211,10 @@
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: {
-                    second: '%H:%M:%S'
+                    minute: '%e. %b %H:%M',
                 }
-
-
             },
+
             yAxis: {
                 title: {
                     text: ''
@@ -233,6 +232,11 @@
             },
             credits: {
                 enabled: false
+            },
+            tooltip: {
+                formatter: function () {
+                    return this.series.name + ': <b>' + Highcharts.numberFormat(this.y, 2) + ' </b>';
+                },
             },
             title: {
                 text: ''
@@ -330,11 +334,11 @@
         });
     }
     function refresh() {
-        var ip = $('#ipSelect '+ " option:selected").val();
-        var roomId = $('#roomSelect'+ " option:selected").val();
-        var version = $('#versionSelect'+ " option:selected").val();
-        var startTime = $('#startTime'+ " option:selected").val();
-        var endTime = $('#endTime'+ " option:selected").val();
+        var ip = $('#ipSelect ' + " option:selected").val();
+        var roomId = $('#roomSelect' + " option:selected").val();
+        var version = $('#versionSelect' + " option:selected").val();
+        var startTime = $('#startTime' + " option:selected").val();
+        var endTime = $('#endTime' + " option:selected").val();
         queryChart(ip, roomId, version, startTime, endTime);
     }
 

@@ -57,7 +57,7 @@ public class MetricsDao {
                 .append(MetricField.MIN_TIME.getName(), meta.getMinTime())
                 .append(MetricField.CODES.getName(), meta.getCodes())
                 .append(MetricField.SUCCESS_COUNT.getName(), meta.getCodes().get(0))
-                .append(MetricField.X_AXIS.getName(), System.currentTimeMillis() / (1000 * 60) * 1000)
+                .append(MetricField.X_AXIS.getName(), System.currentTimeMillis() / (1000 * 60) * 1000 * 60)
                 .append(MetricField.VERSION.getName(), config.getVersion())
                 .append(MetricField.TYPE.getName(), config.getType())
                 .append(MetricField.IP.getName(), config.getIp())
