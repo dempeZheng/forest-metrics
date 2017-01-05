@@ -5,6 +5,8 @@ import com.zhizus.forest.metrics.dao.AppDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Dempe on 2017/1/5.
  */
@@ -14,10 +16,13 @@ public class AppService {
     @Autowired
     private AppDao appDao;
 
-    public void save(App app){
+    public void save(App app) {
         app.setCreateAt(System.currentTimeMillis());
         appDao.save(app);
+    }
 
+    public List<App> find() {
+        return appDao.find();
     }
 
 }

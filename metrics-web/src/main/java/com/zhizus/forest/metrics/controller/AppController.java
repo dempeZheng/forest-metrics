@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 /**
@@ -31,6 +32,12 @@ public class AppController {
         app.setAppKey(appKey);
         appService.save(app);
         return JSON.toJSONString(app);
+    }
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public String list(HttpSession session) {
+        return JSON.toJSONString(appService.find());
     }
 
     @RequestMapping("/index.do")
