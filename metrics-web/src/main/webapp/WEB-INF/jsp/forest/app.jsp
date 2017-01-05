@@ -9,7 +9,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
- <jsp:include page="../common/style.jsp"></jsp:include>
+    <jsp:include page="../common/style.jsp"></jsp:include>
 </head>
 
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -29,21 +29,63 @@
                             </div><!-- /.box-tools -->
                         </div>
                         <div class="box-body ">
-                            <table id="table"  class="table table-bordered">
+                            <table id="table" class="table table-bordered">
                                 <div id="toolbar">
+                                    <button id="add" class="btn btn-default">
+                                        <i class="glyphicon glyphicon-plus"></i>增加
+                                    </button>
                                 </div>
-                            </table>
                         </div>
+
+                        </table>
                     </div>
                 </div>
             </div>
         </section>
-
     </div>
-    <jsp:include page="../footer.jsp"/>
-    <jsp:include page="../control-siderbar.jsp"/>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">服务信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="add-form" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="serviceName" class="col-sm-3 control-label">服务名:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control validate[required]" name="serviceName"
+                                   id="serviceName">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="control-sidebar-bg"></div>
+<div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示信息</h4>
+            </div>
+            <div class="modal-body" id="tipMsg"></div>
+        </div>
+    </div>
+</div>
+
+<jsp:include page="../footer.jsp"/>
+<jsp:include page="../control-siderbar.jsp"/>
+
+<div class="control-sidebar-bg"></div>
 </div>
 
 <%--<script src="/dist/js/pages/dashboard.js"></script>--%>
@@ -81,38 +123,35 @@
                 $('#table').bootstrapTable({
                     columns: [
                         {
-                            field: '_id',
-                            title: 'uri',
+                            field: 'serviceName',
+                            title: 'serviceName',
                             sortable: 'true',
                             visible: true,
                             align: 'center',
                             width: '15%',
                             formatter: function (val, row, index) {
-                                return '<a href="/metric/detail.do?uri=' + row._id + '">' + row._id + '</a>';
+                                return '<a href="/metric/index.do?serviceName=' + row.serviceName + '">' + row.serviceName + '</a>';
                             }
                         },
                         {
-                            field: 'count',
-                            title: '请求数',
+                            field: 'appKey',
+                            title: 'appKey',
                             sortable: 'true',
                             visible: true,
                             align: 'center',
                             width: '15%'
                         },
-                        {field: 'maxTime', title: 'maxTime(毫秒)', sortable: 'true', align: 'center', width: '15%'},
-                        {field: 'minTime', title: 'minTime(毫秒)', sortable: 'true', align: 'center', width: '15%'},
+                        {field: 'createAt', title: 'createAt', sortable: 'true', align: 'center', width: '15%'},
+                        {field: 'createBy', title: 'createBy', sortable: 'true', align: 'center', width: '15%'},
                         {
-                            field: 'time', title: 'avgTime(毫秒)', sortable: 'true', align: 'center', width: '15%',
-                            formatter: function (val, row, index) {
-                                return (row.time / row.count).toFixed(2);
-                            }
-                        },
-                        {
-                            field: 'id',
+                            field: 'serviceName',
                             title: '操作',
                             align: 'center',
-                            width: '20%',
-                        },
+                            width: '15%',
+                            formatter: function (val, row, index) {
+                                return '<button data-id=' + val + ' class="opt_remove btn btn-danger"><i class="glyphicon glyphicon-remove"></i>删除</button>';
+                            }
+                        }
                     ],
                     cache: false,
                     striped: true,
@@ -124,7 +163,7 @@
                     search: true,
                     sidePagination: "client",
                     toolbar: '#toolbar',
-                    url: '/metric/groupByUri.do',
+                    url: '/app/list.do',
                     queryParams: function queryParams(params) {   //设置查询参数
                         var param = {};
                         return param;
@@ -132,6 +171,8 @@
                 });
 
             }
+
+
         };
 
         // 初始化table
@@ -143,6 +184,57 @@
             scroll: false
         });
 
+        $("body").undelegate(".opt_remove", "click").delegate(".opt_remove", "click", function () {
+            var serviceName = $(this).attr("data-id");
+            if (confirm("你确认删除【" + serviceName + "】吗?\r\n删除后再也不能找回，请谨慎操作！")) {
+                $.ajax({
+                    type: 'post',
+                    url: "/app/deleteByServiceName.do",
+                    data: {'serviceName': serviceName},
+                    dataType: "json",
+                    success: function (json) {
+                        if (json.code == 0) {
+                            $("#tipMsg").text("删除成功");
+                            $("#tipModal").modal('show');
+                            TableHelper.doRefresh("#table");
+                        } else {
+                            $("#tipMsg").text("删除失败，错误码：" + json.msg);
+                            $("#tipModal").modal('show');
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+
+    $("#add").click(function () {
+        // 打开编辑弹窗
+        $("#addModal").modal('show');
+    });
+
+
+    $("#save").click(function () {
+        console.log($('#add-form').serialize());
+        if ($("#add-form").validationEngine('validate')) {
+            $.ajax({
+                type: "post",
+                url: "/app/save.do",
+                data: $('#add-form').serialize(),
+                dataType: "json",
+                success: function (json) {
+//                    if (json.result == 0) {
+                    $("#addModal").modal('hide');
+                    $("#tipMsg").text("保存成功");
+//                        $("#tipModal").modal('show');
+                    TableHelper.doRefresh("#table");
+//                    } else {
+//                        $("#tipMsg").text("保存失败，错误码：" + json.result);
+//                        $("#tipModal").modal('show');
+//                    }
+                }
+            });
+        }
     });
 
 

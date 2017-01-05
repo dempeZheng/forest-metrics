@@ -1,7 +1,9 @@
 package com.zhizus.forest.metrics.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.zhizus.forest.metrics.JsonResult;
 import com.zhizus.forest.metrics.bean.App;
+import com.zhizus.forest.metrics.bean.User;
 import com.zhizus.forest.metrics.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +26,11 @@ public class AppController {
 
     @RequestMapping("/save.do")
     @ResponseBody
-    public String save(@RequestParam String serviceName, @RequestParam String uid) {
+    public String save(@RequestParam String serviceName, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         App app = new App();
         app.setServiceName(serviceName);
-        app.setCreateBy(uid);
+        app.setCreateBy(user.getName());
         String appKey = UUID.randomUUID().toString().replace("-", "");
         app.setAppKey(appKey);
         appService.save(app);
@@ -42,7 +45,15 @@ public class AppController {
 
     @RequestMapping("/index.do")
     public String index() {
-        return "app";
+        return "forest/app";
+    }
+
+    @RequestMapping("/deleteByServiceName.do")
+    @ResponseBody
+    public String deleteByServiceName(@RequestParam String serviceName) {
+        appService.deleteByServiceName(serviceName);
+        return JsonResult.successResult().toJSONString();
+
     }
 
 }

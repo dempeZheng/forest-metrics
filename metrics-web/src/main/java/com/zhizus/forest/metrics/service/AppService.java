@@ -25,4 +25,8 @@ public class AppService {
         return appDao.find();
     }
 
+    public long deleteByServiceName(String serviceName) {
+        return appDao.deleteByServiceName(serviceName).getDeletedCount();
+    }
+
 }

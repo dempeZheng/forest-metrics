@@ -321,10 +321,11 @@
         <%--+ '&time=' + time;--%>
 
         var uri = '${param.uri}';
+        var serviceName = '${param.serviceName}';
         $.ajax({
             type: "post",
             url: "/metric/listByUri.do",
-            data: {uri: uri, ip: ip, roomId: roomId, version: version, time: time},
+            data: {uri: uri, ip: ip, roomId: roomId, version: version, time: time, serviceName: serviceName},
             dataType: "json",
             success: function (data) {
                 options.series = data.count;

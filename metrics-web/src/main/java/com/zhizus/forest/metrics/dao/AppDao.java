@@ -1,10 +1,12 @@
 package com.zhizus.forest.metrics.dao;
 
 import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.result.DeleteResult;
 import com.zhizus.forest.metrics.bean.App;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,10 @@ public class AppDao {
             list.add(getApp(next));
         }
         return list;
+    }
+
+    public DeleteResult deleteByServiceName(String serviceName) {
+        return collection.deleteOne(new BasicDBObject("_id", serviceName));
     }
 
 }

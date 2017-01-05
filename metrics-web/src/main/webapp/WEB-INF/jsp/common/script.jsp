@@ -14,12 +14,12 @@
 <script src="/plugins/jQuery-Validation-Engine/js/jquery.validationEngine.js"></script>
 <script src="/plugins/jQuery-Validation-Engine/js/languages/jquery.validationEngine-zh_CN.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/plugins/daterangepicker/moment.min.js"></script>
 <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 <script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/js/themes/grid-light.js"></script>
+<script src="/plugins/highchart/highcharts.js"></script>
+<script src="/plugins/highchart/grid-light.js"></script>

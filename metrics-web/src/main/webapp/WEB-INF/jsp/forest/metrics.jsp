@@ -9,7 +9,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
- <jsp:include page="../common/style.jsp"></jsp:include>
+    <jsp:include page="../common/style.jsp"></jsp:include>
 </head>
 
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -29,14 +29,18 @@
                             </div><!-- /.box-tools -->
                         </div>
                         <div class="box-body ">
-                            <table id="table"  class="table table-bordered">
+                            <table id="table" class="table table-bordered">
                                 <div id="toolbar">
                                     <div class="form-inline" role="form">
                                         <div class="form-group extend_query_choice">
                                             <span>服务名:</span>
-                                            <select id="serviceName" class="form-control">
-                                                <c:forEach var="name" items="${names}">
-                                                    <option value="${name}">${name}</option>
+                                            <select id="serviceNameSelector" class="form-control">
+                                                <c:forEach var="app" items="${appList}">
+                                                    <option value="${app.serviceName}"
+                                                            <c:if test="${app.serviceName==serviceName}">
+                                                                selected
+                                                            </c:if>
+                                                    > ${app.serviceName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -63,31 +67,13 @@
 <script>
 
     $('#ok').click(function () {
+        console.log("fresh");
         $('#table').bootstrapTable('refresh');
     });
 
     $(function () {
         window.initHandle = {
-            // 编辑
-            editModel: function (id) {
-                $.ajax({
-                    type: "post",
-                    url: "/discovery/query",
-                    data: {vuid: id},
-                    dateType: "json",
-                    success: function (json) {
-                        var data = JSON.parse(json).data;
-                        $("#uid").attr("readonly", true)
-                        $("#edit").val(1);
-                        if (data) {
-                            $("#uid").val(data.uid);
-                            $("#topSid").val(data.topSid);
-                            $("#modal").modal('show');
-                        }
 
-                    }
-                });
-            },
             initTable: function () {
                 $('#table').bootstrapTable('destroy');
                 $('#table').bootstrapTable({
@@ -100,7 +86,8 @@
                             align: 'center',
                             width: '15%',
                             formatter: function (val, row, index) {
-                                return '<a href="/metric/detail.do?uri=' + row._id + '">' + row._id + '</a>';
+                                var serviceName = $('#serviceNameSelector' + " option:selected").val();
+                                return '<a href="/metric/detail.do?serviceName=' + serviceName + '&uri=' + row._id + '">' + row._id + '</a>';
                             }
                         },
                         {
@@ -138,7 +125,8 @@
                     toolbar: '#toolbar',
                     url: '/metric/groupByUri.do',
                     queryParams: function queryParams(params) {   //设置查询参数
-                        var param = {};
+                        var serviceName = $('#serviceNameSelector' + " option:selected").val();
+                        var param = {serviceName: serviceName};
                         return param;
                     }
                 });
@@ -148,12 +136,6 @@
 
         // 初始化table
         initHandle.initTable();
-
-        // 设置校验ui
-        $('#form').validationEngine('attach', {
-            promptPosition: 'centerRight',
-            scroll: false
-        });
 
     });
 
