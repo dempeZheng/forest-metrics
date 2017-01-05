@@ -11,7 +11,7 @@
                     <i class="fa fa-dashboard"></i> <span>系统监控</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgr/trans/globalConfig.action"><i class="fa fa-circle-o"></i></a></li>
+                    <li><a href="/metric/index"><i class="fa fa-circle-o">服务概况</i></a></li>
                 </ul>
 
             </li>
@@ -22,7 +22,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgr/shiro/userPermissionsIndex.action"><i class="fa fa-circle-o"></i>用户权限配置</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>用户权限配置</a></li>
                 </ul>
             </li>
 

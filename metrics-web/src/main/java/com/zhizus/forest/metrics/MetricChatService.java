@@ -66,6 +66,7 @@ public class MetricChatService {
     }
 
     public JSONObject wrapChatData(AggregateIterable<Document> documents) {
+
         JSONObject result = new JSONObject();
 
         JSONArray countArr = new JSONArray();

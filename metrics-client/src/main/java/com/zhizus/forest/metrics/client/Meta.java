@@ -32,10 +32,10 @@ public class Meta {
         synchronized (this) {
             this.time += time;
         }
-        if(maxTime<time){
-            maxTime= (int) time;
+        if (maxTime < time) {
+            maxTime = (int) time;
         }
-        if(minTime>time){
+        if (minTime > time || maxTime == 0) {
             minTime = (int) time;
         }
         count.incrementAndGet();
