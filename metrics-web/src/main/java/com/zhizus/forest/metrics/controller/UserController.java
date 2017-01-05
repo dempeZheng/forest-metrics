@@ -7,7 +7,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +21,13 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 
+    @RequestMapping(value = "/index")
+    public String index() {
+        return "login";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam User user,  Model model, HttpServletRequest request) {
+    public String login(@RequestParam String name, String pwd, Model model, HttpServletRequest request) {
         try {
             Subject subject = SecurityUtils.getSubject();
             // 已登陆则 跳到首页
@@ -32,9 +36,12 @@ public class UserController {
             }
 
             // 身份验证
-            subject.login(new UsernamePasswordToken(user.getName(), user.getPwd()));
+            subject.login(new UsernamePasswordToken(name, pwd));
             // 验证成功在Session中保存用户信息
 //            final User authUserInfo = userService.selectByUsername(user.getUsername());
+            User user = new User();
+            user.setName(name);
+            user.setPwd(pwd);
             request.getSession().setAttribute("user", user);
         } catch (AuthenticationException e) {
             // 身份验证失败
