@@ -8,7 +8,6 @@
     <title>Metrics</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
     <jsp:include page="../common/style.jsp"></jsp:include>
     <![endif]-->
     <style type="text/css">
@@ -84,13 +83,10 @@
                                         <div class="input-group">
                                             <button type="button" class="btn btn-default pull-right" id="daterange-btn">
                                                 <i class="fa fa-calendar"></i>
-                                            <span>
-                                            选择时段
-                                            </span>
+                                                <span>选择时段</span>
                                                 <i class="fa fa-caret-down"></i>
                                             </button>
                                         </div>
-
                                         <button id="ok" type="submit" class=" form-control btn btn-primary">查询</button>
                                     </div>
 
@@ -194,29 +190,12 @@
 <jsp:include page="../common/script.jsp"/>
 <script>
 
-    //Date picker
-    $('.datepicker').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii:ss',
-        todayBtn: 'linked',
-        language: 'zh-CN',
-        autoclose: true
-    });
-
-    $('.timepicker').datetimepicker({
-        format: 'hh:ii',
-        startView: '0',
-        autoclose: true
-    });
-
-    $('#endTime').datepicker('update', new Date());
-
     $('#ok').click(function () {
         refresh();
     });
 
-    function queryChart(ip, roomId, version, startTime, endTime) {
-        var url = "/metric/listByUri?uri=" + '${param.uri}' + "&ip=" + ip + '&roomId=' + roomId + '&version=' + version
-                + '&startTime=' + startTime + '&endTime=' + endTime;
+    function queryChart(ip, roomId, version, time) {
+
         var options = {
             chart: {
                 renderTo: 'countContainer',
@@ -338,32 +317,45 @@
             series: [{}]
         };
 
-        $.getJSON(url, function (data) {
-            options.series = data.count;
+        <%--var url = "/metric/listByUri?uri=" + '${param.uri}' + "&ip=" + ip + '&roomId=' + roomId + '&version=' + version--%>
+        <%--+ '&time=' + time;--%>
+
+        var uri = '${param.uri}';
+        $.ajax({
+            type: "post",
+            url: "/metric/listByUri",
+            data: {uri: uri, ip: ip, roomId: roomId, version: version, time: time},
+            dataType: "json",
+            success: function (data) {
+                options.series = data.count;
 //            options.title.text = "请求数";
-            Highcharts.setOptions({global: {useUTC: false}});
-            var chart = new Highcharts.Chart(options);
+                Highcharts.setOptions({global: {useUTC: false}});
+                var chart = new Highcharts.Chart(options);
 
-            timeOptions.series = data.time;
+                timeOptions.series = data.time;
 //            timeOptions.title.text = "时延";
-            var chart = new Highcharts.Chart(timeOptions);
+                var chart = new Highcharts.Chart(timeOptions);
 
-            timeDistributionOptions.series = data.timeDistribution;
+                timeDistributionOptions.series = data.timeDistribution;
 //            timeDistributionOptions.title.text = "时延分布";
-            var chart = new Highcharts.Chart(timeDistributionOptions);
+                var chart = new Highcharts.Chart(timeDistributionOptions);
 
-            codesOptions.series = data.codes;
+                codesOptions.series = data.codes;
 //            codesOptions.title.text = "状态码比例分布";
-            var chart = new Highcharts.Chart(codesOptions);
+                var chart = new Highcharts.Chart(codesOptions);
+            }
         });
+
     }
     function refresh() {
         var ip = $('#ipSelect ' + " option:selected").val();
         var roomId = $('#roomSelect' + " option:selected").val();
         var version = $('#versionSelect' + " option:selected").val();
-        var startTime = $('#startTime' + " option:selected").val();
-        var endTime = $('#endTime' + " option:selected").val();
-        queryChart(ip, roomId, version, startTime, endTime);
+        var time = $('#daterange-btn span').html();
+        if (time.indexOf('选择时段') != -1) {
+            time = '';
+        }
+        queryChart(ip, roomId, version, time);
     }
 
     $(document).ready(function () {
@@ -415,13 +407,19 @@
                             '七月', '八月', '九月', '十月', '十一月', '十二月'],
                         firstDay: 1
                     }
-
                 },
 
                 function (start, end) {
-                    $('#daterange-btn span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' 至 ' + end.format('YYYY-MM-DD HH:mm:ss'));
+                    $('#daterange-btn span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD HH:mm:ss'));
                 }
         );
+
+        //选择时间后触发重新加载的方法
+        $("#daterange-btn").on('apply.daterangepicker', function () {
+            //当选择时间后，出发dt的重新加载数据的方法
+            var data = $('#daterange-btn span').html();
+            console.log("date range:" + data);
+        });
 
 
     });

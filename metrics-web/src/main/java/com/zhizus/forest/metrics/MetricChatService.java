@@ -143,8 +143,8 @@ public class MetricChatService {
         return result;
     }
 
-    public JSONObject groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type) {
-        AggregateIterable<Document> documents = metricsDao.groupByXAxis(serviceName, uri, ip, roomId, version, type);
+    public JSONObject groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type,String time) {
+        AggregateIterable<Document> documents = metricsDao.groupByXAxis(serviceName, uri, ip, roomId, version, type,time);
         return wrapChatData(documents);
     }
 

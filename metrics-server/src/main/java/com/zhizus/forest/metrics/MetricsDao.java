@@ -11,11 +11,15 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.zhizus.forest.metrics.gen.MetaConfig;
 import com.zhizus.forest.metrics.gen.MetaReq;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.BasicBSONObject;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +81,7 @@ public class MetricsDao {
     }
 
 
-    public AggregateIterable<Document> groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type) {
+    public AggregateIterable<Document> groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type, String time) {
         BasicDBObject filter = new BasicDBObject(MetricField.URI.getName(), uri);
         if (!Strings.isNullOrEmpty(ip)) {
             filter.append(MetricField.IP.getName(), ip);
@@ -90,6 +94,18 @@ public class MetricsDao {
         }
         if (!Strings.isNullOrEmpty(type)) {
             filter.append(MetricField.TYPE.getName(), type);
+        }
+        if (!Strings.isNullOrEmpty(time)) {
+            String startTime = StringUtils.substringBefore(time, " to ");
+            String endTime = StringUtils.substringAfter(time, " to ");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                long sTime = format.parse(startTime).getTime();
+                long eTime = format.parse(endTime).getTime();
+                filter.append(MetricField.X_AXIS.getName(), new BasicDBObject("$gt", sTime).append("$lt", eTime));
+            } catch (ParseException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
         ArrayList<BasicDBObject> pipeline = Lists.newArrayList(new BasicDBObject().append("$match", filter),
 //                new BasicDBObject().append("$unwind", MetricField.CODES.getName()),

@@ -46,8 +46,9 @@ public class MetricsController {
                             @RequestParam(required = false) String ip,
                             @RequestParam(required = false) String roomId,
                             @RequestParam(required = false) String version,
-                            @RequestParam(required = false) String type) {
-        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type).toJSONString();
+                            @RequestParam(required = false) String type,
+                            @RequestParam(required = false) String time) {
+        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type,time).toJSONString();
     }
 
     @ResponseBody
