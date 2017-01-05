@@ -95,18 +95,24 @@ public class MetricsDao {
         if (!Strings.isNullOrEmpty(type)) {
             filter.append(MetricField.TYPE.getName(), type);
         }
+        long sTime = 0;
+        long eTime = 0;
         if (!Strings.isNullOrEmpty(time)) {
             String startTime = StringUtils.substringBefore(time, " to ");
             String endTime = StringUtils.substringAfter(time, " to ");
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
-                long sTime = format.parse(startTime).getTime();
-                long eTime = format.parse(endTime).getTime();
-                filter.append(MetricField.X_AXIS.getName(), new BasicDBObject("$gt", sTime).append("$lt", eTime));
+                sTime = format.parse(startTime).getTime();
+                eTime = format.parse(endTime).getTime();
             } catch (ParseException e) {
                 LOGGER.error(e.getMessage(), e);
             }
         }
+        if (sTime == 0 || eTime == 0) {
+            eTime = System.currentTimeMillis();
+            sTime = (eTime / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
+        }
+        filter.append(MetricField.X_AXIS.getName(), new BasicDBObject("$gt", sTime).append("$lt", eTime));
         ArrayList<BasicDBObject> pipeline = Lists.newArrayList(new BasicDBObject().append("$match", filter),
 //                new BasicDBObject().append("$unwind", MetricField.CODES.getName()),
                 new BasicDBObject().append("$group", new BasicDBObject("_id", "$" + MetricField.X_AXIS.getName())

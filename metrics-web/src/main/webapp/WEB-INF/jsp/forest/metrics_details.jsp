@@ -387,6 +387,7 @@
                     startDate: moment().startOf('day'),
                     endDate: moment(),
                     minDate: '01/12/2016',    //最小时间
+                    maxDate: moment(),    //最小时间
                     format: 'YYYY-MM-DD HH:mm:ss', //控件中from和to 显示的日期格式
                     showDropdowns: true,
                     showWeekNumbers: false, //是否显示第几周
