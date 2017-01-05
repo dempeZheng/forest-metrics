@@ -31,23 +31,18 @@
     <mvc:default-servlet-handler/>
 
     <!--定义无Controller的path<->view直接映射-->
-    <mvc:view-controller path="/" view-name="redirect:/index"/>
-
-    <bean id="metricsDao" class="com.zhizus.forest.metrics.MetricsDao"/>
+    <mvc:view-controller path="/" view-name="redirect:/metric/index.do"/>
 
     <mvc:resources mapping="/**" location="/static/"/>
 
     <mvc:annotation-driven/>
 
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-            id="internalResourceViewResolver">
-        <!-- 前缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
-        <!-- 后缀 -->
         <property name="suffix" value=".jsp"/>
     </bean>
 
     <import resource="spring-shiro.xml"></import>
+    <import resource="spring-mongo.xml"></import>
 
 </beans>

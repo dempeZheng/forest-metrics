@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCursor;
 import com.zhizus.forest.metrics.client.Metrics;
+import com.zhizus.forest.metrics.dao.MetricChatDao;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class MetricChatService {
 
 
     @Autowired
-    private MetricsDao metricsDao;
+    private MetricChatDao metricsDao;
 
 
     private Map<Integer, Integer> initTimeDistributionMap() {
@@ -90,13 +91,13 @@ public class MetricChatService {
         while (iterator.hasNext()) {
             Document document = iterator.next();
 
-            Long xAxis = document.getLong(MetricsDao.MetricField.ID.getName());
+            Long xAxis = document.getLong(MetricChatDao.MetricField.ID.getName());
 
-            Integer maxTime = document.getInteger(MetricsDao.MetricField.MAX_TIME.getName());
-            Integer minTime = document.getInteger(MetricsDao.MetricField.MIN_TIME.getName());
-            Integer count = document.getInteger(MetricsDao.MetricField.COUNT.getName());
+            Integer maxTime = document.getInteger(MetricChatDao.MetricField.MAX_TIME.getName());
+            Integer minTime = document.getInteger(MetricChatDao.MetricField.MIN_TIME.getName());
+            Integer count = document.getInteger(MetricChatDao.MetricField.COUNT.getName());
 
-            Double timeDouble = Double.valueOf(document.getLong(MetricsDao.MetricField.TIME.getName()));
+            Double timeDouble = Double.valueOf(document.getLong(MetricChatDao.MetricField.TIME.getName()));
             Double countDouble = Double.valueOf(count);
             Double avgTime = timeDouble == null || countDouble == null || countDouble == 0 ? 0D : (timeDouble / countDouble);
 

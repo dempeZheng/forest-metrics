@@ -1,6 +1,6 @@
 package com.zhizus.forest.metrics.controller;
 
-import com.zhizus.forest.metrics.User;
+import com.zhizus.forest.metrics.bean.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -26,13 +26,13 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login.do", method = RequestMethod.POST)
     public String login(@RequestParam String name, String pwd, Model model, HttpServletRequest request) {
         try {
             Subject subject = SecurityUtils.getSubject();
             // 已登陆则 跳到首页
             if (subject.isAuthenticated()) {
-                return "redirect:/metric/index";
+                return "redirect:/metric/index.do";
             }
 
             // 身份验证
@@ -48,13 +48,13 @@ public class UserController {
             model.addAttribute("error", "用户名或密码错误 ！");
             return "login";
         }
-        return "redirect:/metric/index";
+        return "redirect:/metric/index.do";
     }
 
     /**
      * 用户退出登录
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         session.removeAttribute("user");
         // 登出操作

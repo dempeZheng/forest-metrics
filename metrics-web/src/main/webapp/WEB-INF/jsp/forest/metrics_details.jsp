@@ -323,7 +323,7 @@
         var uri = '${param.uri}';
         $.ajax({
             type: "post",
-            url: "/metric/listByUri",
+            url: "/metric/listByUri.do",
             data: {uri: uri, ip: ip, roomId: roomId, version: version, time: time},
             dataType: "json",
             success: function (data) {

@@ -2,7 +2,7 @@ package com.zhizus.forest.metrics.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.zhizus.forest.metrics.MetricChatService;
-import com.zhizus.forest.metrics.MetricsDao;
+import com.zhizus.forest.metrics.dao.MetricChatDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +20,18 @@ public class MetricsController {
     private final static String serviceName = "forest-metrics";
 
     @Autowired
-    private MetricsDao metricsDao;
+    private MetricChatDao metricsDao;
 
     @Autowired
     private MetricChatService metricChatService;
 
-    @RequestMapping("/index")
+    @RequestMapping("/index.do")
     public ModelAndView index(ModelAndView modelAndView) throws Exception {
         modelAndView.setViewName("forest/metrics");
         return modelAndView;
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping("/detail.do")
     public ModelAndView detail(@RequestParam String uri, ModelAndView modelAndView) throws Exception {
         modelAndView.setViewName("forest/metrics_details");
         modelAndView.addObject("ips", metricsDao.listFields(serviceName, uri, "ip"));
@@ -41,24 +41,24 @@ public class MetricsController {
     }
 
     @ResponseBody
-    @RequestMapping("/listByUri")
+    @RequestMapping("/listByUri.do")
     public String listByUri(@RequestParam String uri,
                             @RequestParam(required = false) String ip,
                             @RequestParam(required = false) String roomId,
                             @RequestParam(required = false) String version,
                             @RequestParam(required = false) String type,
                             @RequestParam(required = false) String time) {
-        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type,time).toJSONString();
+        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type, time).toJSONString();
     }
 
     @ResponseBody
-    @RequestMapping("/uriList")
+    @RequestMapping("/uriList.do")
     public String uriList() {
         return JSONArray.toJSONString(metricsDao.listUri(serviceName));
     }
 
     @ResponseBody
-    @RequestMapping("/groupByUri")
+    @RequestMapping("/groupByUri.do")
     public String groupByUri() {
         return JSONArray.toJSONString(metricsDao.groupByUri(serviceName));
     }

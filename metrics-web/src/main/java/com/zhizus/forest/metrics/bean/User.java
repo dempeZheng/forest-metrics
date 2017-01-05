@@ -1,4 +1,4 @@
-package com.zhizus.forest.metrics;
+package com.zhizus.forest.metrics.bean;
 
 /**
  * Created by Dempe on 2017/1/5.

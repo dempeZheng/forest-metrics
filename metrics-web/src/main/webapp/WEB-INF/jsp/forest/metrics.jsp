@@ -136,7 +136,7 @@
                     search: true,
                     sidePagination: "client",
                     toolbar: '#toolbar',
-                    url: '/metric/groupByUri',
+                    url: '/metric/groupByUri.do',
                     queryParams: function queryParams(params) {   //设置查询参数
                         var param = {};
                         return param;
