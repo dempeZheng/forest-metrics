@@ -8,28 +8,8 @@
     <title>Metrics</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <%--<link rel="stylesheet" href="/libs/css/font-awesome.min.css">--%>
-    <%--<!-- Ionicons -->--%>
-    <link rel="stylesheet" href="/libs/css/ionicons.min.css">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css">
-    <%--<!-- Ionicons -->--%>
-    <%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">--%>
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <jsp:include page="../common/style.jsp"></jsp:include>
     <![endif]-->
     <style type="text/css">
         .content {
@@ -90,10 +70,17 @@
                                                 <option value="${version}">${version}</option>
                                             </c:forEach>
                                         </select>
-                                        <input type="text" class="form-control" id="stime">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control datepicker" id="startTime">
+                                            <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
                                         <strong class="input-strong-input">至</strong>
-                                        <input type="text" class="form-control" id="etime">
-                                        <strong class="form-control">&nbsp;</strong>
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control datepicker" id="endTime">
+                                            <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
                                         <select id="fastTime" class="form-control">
                                             <option value="">快速选择时间段...</option>
                                             <option value="30">近30分钟</option>
@@ -207,6 +194,21 @@
 
 <jsp:include page="../common/script.jsp"/>
 <script>
+
+    //Date picker
+    $('.datepicker').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss',
+        todayBtn: 'linked',
+        language: 'zh-CN',
+        startDate: new Date(),
+        autoclose: true
+    });
+
+    $('.timepicker').datetimepicker({
+        format: 'hh:ii',
+        startView: '0',
+        autoclose: true
+    });
 
     $('#ok').click(function () {
         refresh();
@@ -339,7 +341,7 @@
         $.getJSON(url, function (data) {
             options.series = data.count;
 //            options.title.text = "请求数";
-            Highcharts.setOptions({ global: { useUTC: false } });
+            Highcharts.setOptions({global: {useUTC: false}});
             var chart = new Highcharts.Chart(options);
 
             timeOptions.series = data.time;
