@@ -17,6 +17,7 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins
 folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+<%--<link rel="stylesheet" href="/dist/css/skins/skin-black.min.css">--%>
 
 <%--<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">--%>
 <link rel="stylesheet" href="/bootstrap-table/bootstrap-table/src/bootstrap-table.css">

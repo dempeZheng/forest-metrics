@@ -22,7 +22,7 @@
     </style>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
     <jsp:include page="../header.jsp"/>

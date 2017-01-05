@@ -11,15 +11,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.zhizus.forest.metrics.gen.MetaConfig;
 import com.zhizus.forest.metrics.gen.MetaReq;
-import org.apache.commons.lang3.StringUtils;
 import org.bson.BasicBSONObject;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +50,6 @@ public class MetricsDao {
     }
 
     protected Document getDocument(MetaReq meta, MetaConfig config) {
-//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return new Document(MetricField.URI.getName(), meta.getUri())
                 .append(MetricField.COUNT.getName(), meta.getCount())
                 .append(MetricField.MAX_TIME.getName(), meta.getMaxTime())
@@ -81,7 +76,7 @@ public class MetricsDao {
     }
 
 
-    public AggregateIterable<Document> groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type, String time) {
+    public AggregateIterable<Document> groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type, long sTime, long eTime) {
         BasicDBObject filter = new BasicDBObject(MetricField.URI.getName(), uri);
         if (!Strings.isNullOrEmpty(ip)) {
             filter.append(MetricField.IP.getName(), ip);
@@ -95,26 +90,9 @@ public class MetricsDao {
         if (!Strings.isNullOrEmpty(type)) {
             filter.append(MetricField.TYPE.getName(), type);
         }
-        long sTime = 0;
-        long eTime = 0;
-        if (!Strings.isNullOrEmpty(time)) {
-            String startTime = StringUtils.substringBefore(time, " to ");
-            String endTime = StringUtils.substringAfter(time, " to ");
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                sTime = format.parse(startTime).getTime();
-                eTime = format.parse(endTime).getTime();
-            } catch (ParseException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-        if (sTime == 0 || eTime == 0) {
-            eTime = System.currentTimeMillis();
-            sTime = (eTime / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
-        }
         filter.append(MetricField.X_AXIS.getName(), new BasicDBObject("$gt", sTime).append("$lt", eTime));
+
         ArrayList<BasicDBObject> pipeline = Lists.newArrayList(new BasicDBObject().append("$match", filter),
-//                new BasicDBObject().append("$unwind", MetricField.CODES.getName()),
                 new BasicDBObject().append("$group", new BasicDBObject("_id", "$" + MetricField.X_AXIS.getName())
                         .append(MetricField.COUNT.getName(), new BasicDBObject("$sum", "$" + MetricField.COUNT.getName()))
                         .append(MetricField.MAX_TIME.getName(), new BasicDBObject("$max", "$" + MetricField.MAX_TIME.getName()))

@@ -2,15 +2,22 @@ package com.zhizus.forest.metrics;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCursor;
 import com.zhizus.forest.metrics.client.Metrics;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +27,8 @@ import java.util.Map;
  */
 @Service
 public class MetricChatService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetricChatService.class);
 
 
     @Autowired
@@ -143,8 +152,25 @@ public class MetricChatService {
         return result;
     }
 
-    public JSONObject groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type,String time) {
-        AggregateIterable<Document> documents = metricsDao.groupByXAxis(serviceName, uri, ip, roomId, version, type,time);
+    public JSONObject groupByXAxis(String serviceName, String uri, String ip, String roomId, String version, String type, String time) {
+        long sTime = 0;
+        long eTime = 0;
+        if (!Strings.isNullOrEmpty(time)) {
+            String startTime = StringUtils.substringBefore(time, " to ");
+            String endTime = StringUtils.substringAfter(time, " to ");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                sTime = format.parse(startTime).getTime();
+                eTime = format.parse(endTime).getTime();
+            } catch (ParseException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+        if (sTime == 0 || eTime == 0) {
+            eTime = System.currentTimeMillis();
+            sTime = (eTime / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
+        }
+        AggregateIterable<Document> documents = metricsDao.groupByXAxis(serviceName, uri, ip, roomId, version, type, sTime, eTime);
         return wrapChatData(documents);
     }
 
