@@ -40,8 +40,10 @@
                                     <small>监控详情</small>
                                 </h1>
                                 <ol class="breadcrumb">
-                                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                                    <li><a href="#">serviceName</a></li>
+                                    <li><a href="/app/index.do"><i class="fa fa-dashboard"></i> Home</a></li>
+                                    <li>
+                                        <a href="/metric/index.do?serviceName=${param.serviceName}">${param.serviceName}</a>
+                                    </li>
                                     <li class="active">${param.uri}</li>
                                 </ol>
                             </section>

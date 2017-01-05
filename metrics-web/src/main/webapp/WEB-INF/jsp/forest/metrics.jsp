@@ -24,9 +24,17 @@
                 <div class="col-xs-12">
                     <div class=" box  box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">监控列表</h3>
-                            <div class="box-tools pull-right">
-                            </div><!-- /.box-tools -->
+                            <section class="content-header">
+                                <h1>
+                                    监控列表
+                                </h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="/app/index.do"><i class="fa fa-dashboard"></i> Home</a></li>
+                                    <li class="active">
+                                        ${param.serviceName}
+                                    </li>
+                                </ol>
+                            </section>
                         </div>
                         <div class="box-body ">
                             <table id="table" class="table table-bordered">
