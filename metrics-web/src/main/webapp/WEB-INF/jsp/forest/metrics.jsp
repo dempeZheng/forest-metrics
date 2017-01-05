@@ -100,7 +100,7 @@
                             align: 'center',
                             width: '15%',
                             formatter: function (val, row, index) {
-                                return '<a href="/metric/detail?uri=' + row._id + '">' + row._id + '</a>';
+                                return '<a href="/metric/detail.do?uri=' + row._id + '">' + row._id + '</a>';
                             }
                         },
                         {
