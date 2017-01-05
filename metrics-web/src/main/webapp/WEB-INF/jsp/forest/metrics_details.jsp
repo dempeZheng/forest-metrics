@@ -52,19 +52,19 @@
                                 <div class="form-inline" role="form">
                                     <div class="control-group">
                                         <select id="ipSelect" class="form-control">
-                                            <option value="">所有的ip</option>
+                                            <option value="">所有IP</option>
                                             <c:forEach var="ip" items="${ips}">
                                                 <option value="${ip}">${ip}</option>
                                             </c:forEach>
                                         </select>
                                         <select id="roomSelect" class="form-control">
-                                            <option value="">所有的机房</option>
+                                            <option value="">所有机房</option>
                                             <c:forEach var="room" items="${rooms}">
                                                 <option value="${room}">${room}</option>
                                             </c:forEach>
                                         </select>
                                         <select id="versionSelect" class="form-control">
-                                            <option value="">所有的版本</option>
+                                            <option value="">所有版本</option>
                                             <c:forEach var="version" items="${versions}">
                                                 <option value="${version}">${version}</option>
                                             </c:forEach>

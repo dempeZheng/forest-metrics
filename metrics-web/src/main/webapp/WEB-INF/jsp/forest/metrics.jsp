@@ -22,13 +22,13 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box  box-solid">
+                    <div class=" box  box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">监控列表</h3>
                             <div class="box-tools pull-right">
                             </div><!-- /.box-tools -->
                         </div>
-                        <div class="box-body">
+                        <div class="box-body ">
                             <table id="table"  class="table table-bordered">
                                 <div id="toolbar">
                                     <div class="form-inline" role="form">

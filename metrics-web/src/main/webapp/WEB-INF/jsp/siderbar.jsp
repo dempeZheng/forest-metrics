@@ -8,10 +8,10 @@
 
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-table"></i> 系统监控
+                    <i class="fa fa-th-large"></i> 系统监控
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/metric/index"><i class="fa fa-pie-chart"></i>服务概况</a></li>
+                    <li><a href="/metric/index"><i class="fa fa-bar-chart-o"></i>服务概况</a></li>
                 </ul>
 
             </li>

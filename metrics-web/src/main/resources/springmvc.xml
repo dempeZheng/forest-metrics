@@ -35,13 +35,10 @@
 
     <bean id="metricsDao" class="com.zhizus.forest.metrics.MetricsDao"/>
 
-
     <mvc:resources mapping="/**" location="/static/"/>
 
-    <!-- if you use annotation you must configure following setting -->
     <mvc:annotation-driven/>
 
-    <!-- configure the InternalResourceViewResolver -->
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver"
             id="internalResourceViewResolver">
@@ -51,14 +48,6 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!---->
-    <!--<mvc:interceptors>-->
-    <!--<bean class="com.yy.ent.carrot.interceptor.LoginInterceptor"></bean>-->
-    <!--<mvc:interceptor>-->
-    <!--<mvc:mapping path="/admin/*" />-->
-    <!--&lt;!&ndash; 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 &ndash;&gt;-->
-    <!--<bean class="com.yy.ent.carrot.interceptor.AdminInterceptor" />-->
-    <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors> -->
+    <import resource="spring-shiro.xml"></import>
 
 </beans>
