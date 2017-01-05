@@ -21,10 +21,10 @@ folder instead of downloading all of them to reduce the load. -->
 <%--<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">--%>
 <link rel="stylesheet" href="/bootstrap-table/bootstrap-table/src/bootstrap-table.css">
 <link rel="stylesheet" href="/plugins/jQuery-Validation-Engine/css/validationEngine.jquery.css">
-
+<link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
-<link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
-<link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+<%--<link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">--%>
+<%--<link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">--%>
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
