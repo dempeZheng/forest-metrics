@@ -1,4 +1,4 @@
-package com.zhizus.forest.metrics;
+package com.zhizus.forest.metrics.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -31,10 +31,8 @@ public class MetricChatService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MetricChatService.class);
 
-
     @Autowired
     private MetricChatDao metricsDao;
-
 
     private Map<Integer, Integer> initTimeDistributionMap() {
         Map<Integer, Integer> map = Maps.newTreeMap();
@@ -244,6 +242,26 @@ public class MetricChatService {
             }
         }
         return result;
+    }
+
+
+    public JSONArray groupByUri(String serviceName) {
+        AggregateIterable<Document> documents = metricsDao.groupByUri(serviceName);
+        MongoCursor<Document> iterator = documents.iterator();
+        JSONArray array = new JSONArray();
+        while (iterator.hasNext()) {
+            Document next = iterator.next();
+            List<List<Integer>> list = (List<List<Integer>>) next.get("array");
+            int successCount = 0;
+            for (List<Integer> codeList : list) {
+                if (codeList != null && codeList.size() > 0) {
+                    successCount += codeList.get(0);
+                }
+            }
+            next.put("successCount", successCount);
+            array.add(next);
+        }
+        return array;
     }
 
 

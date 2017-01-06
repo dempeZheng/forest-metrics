@@ -2,7 +2,7 @@ package com.zhizus.forest.metrics.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.base.Strings;
-import com.zhizus.forest.metrics.MetricChatService;
+import com.zhizus.forest.metrics.service.MetricChatService;
 import com.zhizus.forest.metrics.bean.App;
 import com.zhizus.forest.metrics.dao.MetricChatDao;
 import com.zhizus.forest.metrics.service.AppService;
@@ -62,16 +62,12 @@ public class MetricsController {
         return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type, time).toJSONString();
     }
 
-    @ResponseBody
-    @RequestMapping("/uriList.do")
-    public String uriList(@RequestParam String serviceName) {
-        return JSONArray.toJSONString(metricsDao.listUri(serviceName));
-    }
+
 
     @ResponseBody
     @RequestMapping("/groupByUri.do")
     public String groupByUri(@RequestParam String serviceName) {
-        return JSONArray.toJSONString(metricsDao.groupByUri(serviceName));
+        return JSONArray.toJSONString(metricChatService.groupByUri(serviceName));
     }
 
 }

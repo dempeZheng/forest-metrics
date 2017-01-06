@@ -11,7 +11,7 @@
                     <i class="fa fa-th-large"></i> 监控中心
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/app/index.do"><i class="fa fa-bar-chart-o"></i>服务列表</a></li>
+                    <li><a href="/app/index.do"><i class="fa fa-table"></i>服务列表</a></li>
                     <li><a href="/metric/index.do"><i class="fa fa-bar-chart-o"></i>服务概况</a></li>
                 </ul>
 
@@ -19,11 +19,11 @@
 
             <li>
                 <a href="#">
-                    <i class="fa fa-envelope"></i> <span>设置</span>
+                    <i class="fa fa-envelope"></i> <span>帮助</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i>用户权限配置</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>用户指南</a></li>
                 </ul>
             </li>
 

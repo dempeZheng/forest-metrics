@@ -111,7 +111,36 @@
                         {
                             field: 'time', title: 'avgTime(毫秒)', sortable: 'true', align: 'center', width: '15%',
                             formatter: function (val, row, index) {
-                                return (row.time / row.count).toFixed(2);
+                                var labelClass = "";
+                                var avgTime = (row.time / row.count).toFixed(2);
+                                if (avgTime < 200) {
+                                    labelClass = "bg-green";
+                                } else if (avgTime < 1000) {
+                                    labelClass = "bg-light-blue";
+                                } else if (avgTime < 2000) {
+                                    labelClass = "bg-yellow";
+                                } else {
+                                    labelClass = "bg-red";
+                                }
+                                return '<span class="badge ' + labelClass + '">' + avgTime + '</span>';
+                            }
+                        },
+                        {
+                            field: 'successCount', title: '成功率', sortable: 'true', align: 'center', width: '15%',
+                            formatter: function (val, row, index) {
+                                var html = '<span class="badge bg-yellow">70%</span>';
+                                var successPercent = (val * 100 / row.count).toFixed(2);
+                                var labelClass = "";
+                                if (successPercent > 98) {
+                                    labelClass = "bg-green";
+                                } else if (successPercent > 90) {
+                                    labelClass = "bg-light-blue";
+                                } else if (successPercent > 80) {
+                                    labelClass = "bg-yellow";
+                                } else {
+                                    labelClass = "bg-red";
+                                }
+                                return '<span class="badge ' + labelClass + '">' + successPercent + '%</span>';
                             }
                         },
                         {
@@ -119,6 +148,10 @@
                             title: '操作',
                             align: 'center',
                             width: '20%',
+                            formatter: function (val, row, index) {
+                                var serviceName = $('#serviceNameSelector' + " option:selected").val();
+                                return '<a href="/metric/detail.do?serviceName=' + serviceName + '&uri=' + row._id + '">' + '<i class="fa fa-bar-chart-o"></i>'+ '</a>';
+                            }
                         },
                     ],
                     cache: false,

@@ -147,22 +147,17 @@ public class MetricChatDao {
      * maxTime:{$max:"$maxTime"},
      * minTime:{$min:"$minTime"}  }}])
      */
-    public JSONArray groupByUri(String serviceName) {
+    public  AggregateIterable<Document> groupByUri(String serviceName) {
         ArrayList<BasicDBObject> pipeline = Lists.newArrayList(new BasicDBObject("$group",
                 new BasicDBObject(MetricField.ID.getName(), "$uri")
                         .append(MetricField.TIME.getName(), new BasicBSONObject("$sum", "$time"))
                         .append(MetricField.COUNT.getName(), new BasicDBObject("$sum", "$count"))
                         .append(MetricField.MAX_TIME.getName(), new BasicDBObject("$max", "$maxTime"))
+                        .append("array", new BasicDBObject("$push", "$" + MetricField.CODES.getName()))
                         .append(MetricField.MIN_TIME.getName(), new BasicDBObject("$min", "$minTime")))
         );
-        AggregateIterable<Document> aggregate = getCollection(serviceName).aggregate(pipeline);
-        MongoCursor<Document> iterator = aggregate.iterator();
-        JSONArray array = new JSONArray();
-        while (iterator.hasNext()) {
-            Document next = iterator.next();
-            array.add(next);
-        }
-        return array;
+      return getCollection(serviceName).aggregate(pipeline);
+
     }
 
 }
