@@ -23,7 +23,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i>用户指南</a></li>
+                    <li><a href="/metric/readme.do"><i class="fa fa-circle-o"></i>用户指南</a></li>
                 </ul>
             </li>
 

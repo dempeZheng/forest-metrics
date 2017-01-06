@@ -70,4 +70,9 @@ public class MetricsController {
         return JSONArray.toJSONString(metricChatService.groupByUri(serviceName));
     }
 
+
+    @RequestMapping("/readme.do")
+    public String readme() {
+        return "forest/readme";
+    }
 }
