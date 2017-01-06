@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <input type="checkbox"> 记住我
+                    <input id="rememberMe" name="rememberMe" type="checkbox"> 记住我
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">

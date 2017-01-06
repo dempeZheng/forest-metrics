@@ -1,6 +1,5 @@
 package com.zhizus.forest.metrics.controller;
 
-import com.zhizus.forest.metrics.Constants;
 import com.zhizus.forest.metrics.bean.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -12,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Dempe on 2017/1/5.
@@ -27,27 +27,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login.do", method = RequestMethod.POST)
-    public String login(@RequestParam String name, String pwd, Model model, HttpServletRequest request, HttpServletResponse response, HttpServlet servlet) {
+    public String login(@RequestParam String name,
+                        @RequestParam String pwd,
+                        @RequestParam boolean rememberMe,
+                        Model model, HttpServletRequest request) {
         try {
             Subject subject = SecurityUtils.getSubject();
             // 已登陆则 跳到首页
             if (subject.isAuthenticated()) {
                 return "redirect:/metric/index.do";
             }
-
-
-
             // 身份验证
-            subject.login(new UsernamePasswordToken(name, pwd));
+            UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
+            token.setRememberMe(rememberMe);
+            subject.login(token);
             // 验证成功在Session中保存用户信息
 //            final User authUserInfo = userService.selectByUsername(user.getUsername());
             User user = new User();
             user.setName(name);
             user.setPwd(pwd);
             request.getSession().setAttribute("user", user);
-            Cookie cookie = new Cookie(Constants.COOKIE_USER_NAME, user.getName());
-            cookie.setMaxAge(Constants.WEEK_TTL);
-            response.addCookie(cookie);
 
         } catch (AuthenticationException e) {
             // 身份验证失败
@@ -65,6 +64,7 @@ public class UserController {
         session.removeAttribute("user");
         // 登出操作
         Subject subject = SecurityUtils.getSubject();
+
         subject.logout();
         return "login";
     }
