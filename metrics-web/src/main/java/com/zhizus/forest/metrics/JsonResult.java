@@ -12,6 +12,20 @@ public class JsonResult extends JSONObject {
         return jsonResult;
     }
 
+    public static JsonResult failedResult(String msg) {
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.put("code", 1);
+        jsonResult.put("msg", msg);
+        return jsonResult;
+    }
+
+    public static JsonResult failedWithUnauthorized() {
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.put("code", -1);
+        jsonResult.put("msg", "unauthorized");
+        return jsonResult;
+    }
+
     public JsonResult setData(Object data) {
         put("data", data);
         return this;

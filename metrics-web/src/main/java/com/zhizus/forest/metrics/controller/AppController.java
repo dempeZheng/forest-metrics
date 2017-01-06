@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
@@ -24,29 +25,34 @@ public class AppController {
     @Autowired
     private AppService appService;
 
+    @RequestMapping("/index.do")
+    public String index() {
+        return "forest/app";
+    }
+
     @RequestMapping("/save.do")
     @ResponseBody
-    public String save(@RequestParam String serviceName, HttpSession session) {
+    public String save(@RequestParam String serviceName, HttpSession session, HttpServletRequest request) {
+
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return JsonResult.failedWithUnauthorized().toJSONString();
+        }
         App app = new App();
         app.setServiceName(serviceName);
         app.setCreateBy(user.getName());
         String appKey = UUID.randomUUID().toString().replace("-", "");
         app.setAppKey(appKey);
         appService.save(app);
-        return JSON.toJSONString(app);
+        return JsonResult.successResult().setData(app).toJSONString();
     }
 
     @RequestMapping("/list.do")
     @ResponseBody
-    public String list(HttpSession session) {
+    public String list() {
         return JSON.toJSONString(appService.find());
     }
 
-    @RequestMapping("/index.do")
-    public String index() {
-        return "forest/app";
-    }
 
     @RequestMapping("/deleteByServiceName.do")
     @ResponseBody

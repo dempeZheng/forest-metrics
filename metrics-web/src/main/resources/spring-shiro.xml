@@ -33,6 +33,7 @@
                 /user/index.do = anon
                 /user/login.do = anon
                 /metric/*.do = authc    <!-- 需要认证通过, 即登录成功 -->
+                /app/*.do = authc    <!-- 需要认证通过, 即登录成功 -->
                 <!-- 说明: /*匹配的的是/abc;  /** 匹配的是多个/*, 比如/abc/def -->
             </value>
         </property>

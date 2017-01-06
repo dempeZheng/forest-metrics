@@ -24,7 +24,7 @@
                 <div class="col-xs-12">
                     <div class=" box  box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">服务列表</h3>
+                            <h3 class="box-title">服务总览</h3>
                             <div class="box-tools pull-right">
                             </div><!-- /.box-tools -->
                         </div>
@@ -35,9 +35,8 @@
                                         <i class="glyphicon glyphicon-plus"></i>增加
                                     </button>
                                 </div>
+                            </table>
                         </div>
-
-                        </table>
                     </div>
                 </div>
             </div>
@@ -75,9 +74,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
                 <h4 class="modal-title">提示信息</h4>
             </div>
             <div class="modal-body" id="tipMsg"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
         </div>
     </div>
 </div>
@@ -98,26 +102,7 @@
 
     $(function () {
         window.initHandle = {
-            // 编辑
-            editModel: function (id) {
-                $.ajax({
-                    type: "post",
-                    url: "/discovery/query",
-                    data: {vuid: id},
-                    dateType: "json",
-                    success: function (json) {
-                        var data = JSON.parse(json).data;
-                        $("#uid").attr("readonly", true)
-                        $("#edit").val(1);
-                        if (data) {
-                            $("#uid").val(data.uid);
-                            $("#topSid").val(data.topSid);
-                            $("#modal").modal('show');
-                        }
 
-                    }
-                });
-            },
             initTable: function () {
                 $('#table').bootstrapTable('destroy');
                 $('#table').bootstrapTable({
@@ -172,9 +157,7 @@
 
             }
 
-
         };
-
         // 初始化table
         initHandle.initTable();
 
@@ -223,15 +206,15 @@
                 data: $('#add-form').serialize(),
                 dataType: "json",
                 success: function (json) {
-//                    if (json.result == 0) {
-                    $("#addModal").modal('hide');
-                    $("#tipMsg").text("保存成功");
-//                        $("#tipModal").modal('show');
-                    TableHelper.doRefresh("#table");
-//                    } else {
-//                        $("#tipMsg").text("保存失败，错误码：" + json.result);
-//                        $("#tipModal").modal('show');
-//                    }
+                    if (json.code == 0) {
+                        $("#addModal").modal('hide');
+                        $("#tipMsg").text("保存成功!");
+                        $("#tipModal").modal('show');
+                        TableHelper.doRefresh("#table");
+                    } else {
+                        $("#tipMsg").text("保存失败! msg：" + json.msg);
+                        $("#tipModal").modal('show');
+                    }
                 }
             });
         }

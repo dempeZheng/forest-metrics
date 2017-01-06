@@ -81,7 +81,6 @@
 
     $(function () {
         window.initHandle = {
-
             initTable: function () {
                 $('#table').bootstrapTable('destroy');
                 $('#table').bootstrapTable({
