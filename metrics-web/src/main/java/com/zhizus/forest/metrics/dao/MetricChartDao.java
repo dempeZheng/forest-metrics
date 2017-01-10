@@ -1,6 +1,5 @@
 package com.zhizus.forest.metrics.dao;
 
-import com.alibaba.fastjson.JSONArray;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
@@ -27,9 +26,9 @@ import java.util.List;
  * Created by Dempe on 2017/1/5.
  */
 @Repository
-public class MetricChatDao {
+public class MetricChartDao {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MetricChatDao.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetricChartDao.class);
 
 
     @Value("${mongo.database}")

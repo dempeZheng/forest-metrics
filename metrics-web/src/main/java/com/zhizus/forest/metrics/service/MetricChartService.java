@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCursor;
 import com.zhizus.forest.metrics.client.Metrics;
-import com.zhizus.forest.metrics.dao.MetricChatDao;
+import com.zhizus.forest.metrics.dao.MetricChartDao;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -27,12 +27,12 @@ import java.util.Map;
  * Created by Dempe on 2017/1/4.
  */
 @Service
-public class MetricChatService {
+public class MetricChartService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MetricChatService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetricChartService.class);
 
     @Autowired
-    private MetricChatDao metricsDao;
+    private MetricChartDao metricsDao;
 
     private Map<Integer, Integer> initTimeDistributionMap() {
         Map<Integer, Integer> map = Maps.newTreeMap();
@@ -89,13 +89,13 @@ public class MetricChatService {
         while (iterator.hasNext()) {
             Document document = iterator.next();
 
-            Long xAxis = document.getLong(MetricChatDao.MetricField.ID.getName());
+            Long xAxis = document.getLong(MetricChartDao.MetricField.ID.getName());
 
-            Integer maxTime = document.getInteger(MetricChatDao.MetricField.MAX_TIME.getName());
-            Integer minTime = document.getInteger(MetricChatDao.MetricField.MIN_TIME.getName());
-            Integer count = document.getInteger(MetricChatDao.MetricField.COUNT.getName());
+            Integer maxTime = document.getInteger(MetricChartDao.MetricField.MAX_TIME.getName());
+            Integer minTime = document.getInteger(MetricChartDao.MetricField.MIN_TIME.getName());
+            Integer count = document.getInteger(MetricChartDao.MetricField.COUNT.getName());
 
-            Double timeDouble = Double.valueOf(document.getLong(MetricChatDao.MetricField.TIME.getName()));
+            Double timeDouble = Double.valueOf(document.getLong(MetricChartDao.MetricField.TIME.getName()));
             Double countDouble = Double.valueOf(count);
             Double avgTime = timeDouble == null || countDouble == null || countDouble == 0 ? 0D : (timeDouble / countDouble);
 
@@ -188,11 +188,7 @@ public class MetricChatService {
     }
 
     private void addSeries(JSONArray series, String name, JSONArray data) {
-        JSONObject json = new JSONObject();
-        json.put("name", name);
-        json.put("data", data);
-        json.put("visible", true);
-        series.add(json);
+        addSeries(series, name, data, true);
     }
 
     private void addSeries(JSONArray series, String name, JSONArray data, boolean visible) {

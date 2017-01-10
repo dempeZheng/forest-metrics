@@ -2,9 +2,9 @@ package com.zhizus.forest.metrics.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.base.Strings;
-import com.zhizus.forest.metrics.service.MetricChatService;
+import com.zhizus.forest.metrics.service.MetricChartService;
 import com.zhizus.forest.metrics.bean.App;
-import com.zhizus.forest.metrics.dao.MetricChatDao;
+import com.zhizus.forest.metrics.dao.MetricChartDao;
 import com.zhizus.forest.metrics.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +22,10 @@ import java.util.List;
 @RequestMapping("/metric")
 public class MetricsController {
     @Autowired
-    private MetricChatDao metricsDao;
+    private MetricChartDao metricsDao;
 
     @Autowired
-    private MetricChatService metricChatService;
+    private MetricChartService metricChartService;
 
     @Autowired
     private AppService appService;
@@ -59,7 +59,7 @@ public class MetricsController {
                             @RequestParam(required = false) String version,
                             @RequestParam(required = false) String type,
                             @RequestParam(required = false) String time) {
-        return metricChatService.groupByXAxis(serviceName, uri, ip, roomId, version, type, time).toJSONString();
+        return metricChartService.groupByXAxis(serviceName, uri, ip, roomId, version, type, time).toJSONString();
     }
 
 
@@ -67,7 +67,7 @@ public class MetricsController {
     @ResponseBody
     @RequestMapping("/groupByUri.do")
     public String groupByUri(@RequestParam String serviceName) {
-        return JSONArray.toJSONString(metricChatService.groupByUri(serviceName));
+        return JSONArray.toJSONString(metricChartService.groupByUri(serviceName));
     }
 
 
